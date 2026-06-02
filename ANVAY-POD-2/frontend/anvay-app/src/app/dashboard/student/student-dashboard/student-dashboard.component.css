@@ -1,0 +1,169 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 5px solid #4f46e5; /* The purple accent line */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.stat-box h3 {
+  font-size: 24px;
+  margin: 5px 0;
+  color: #1e293b;
+}
+
+.dashboard-content-row {
+  display: flex;
+  gap: 24px;
+}
+
+.content-card {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.explore-btn {
+  background: #fdfbfb; 
+  color: #3d3c3c;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px 5px 10px;
+  border-radius: 10px;
+  gap: 14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.explore-btn:hover {
+  background: #2a2a2a;
+  color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.dashboard-content-row {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.content-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #eef2f6;
+  padding: 24px;
+  flex: 1; /* Makes them equal width */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.card-header h3 {
+  font-size: 18px;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-info strong {
+  display: block;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.item-info p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 4px 0;
+}
+
+/* Category Badge Styling (Matching the wireframe) */
+.category-badge {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+  text-transform: lowercase;
+}
+
+.header-card {
+  display: flex;         /* This is the magic line that puts items side-by-side */
+  align-items: center;   /* Vertically centers the text with the icon */
+  gap: 20px;            /* Adds space between the avatar and the text */
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  /* Optional: adds a subtle shadow to match the wireframe cards */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.avatar-container {
+  width: 64px;
+  height: 64px;
+  background-color: #f1f5f9; /* Light gray background for the circle */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0; /* Prevents the circle from squishing */
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallback-icon {
+  font-size: 48px;
+  color: #94a3b8; /* Subtle slate color for the icon */
+}
+
+.info h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.info p {
+  margin: 4px 0 0 0;
+  font-size: 16px;
+  color: #64748b;
+}

@@ -1,0 +1,759 @@
+<!-- PENDING APPROVAL SCREEN -->
+<div class="pending-shell" *ngIf="isPending">
+  <div class="pending-card">
+    <div class="pending-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+    </div>
+    <h1 class="pending-title">Awaiting Approval</h1>
+    <p class="pending-sub">Your institution registration is under review by the platform administrator. You will be notified once your account is activated.</p>
+    <div class="pending-info-row">
+      <div class="pending-info-item">
+        <div class="pii-label">Institution</div>
+        <div class="pii-value">{{institutionName || 'Your Institution'}}</div>
+      </div>
+      <div class="pending-divider"></div>
+      <div class="pending-info-item">
+        <div class="pii-label">Account</div>
+        <div class="pii-value">{{adminName}}</div>
+      </div>
+      <div class="pending-divider"></div>
+      <div class="pending-info-item">
+        <div class="pii-label">Status</div>
+        <div class="pii-value pii-status">Pending Review</div>
+      </div>
+    </div>
+    <div class="pending-steps">
+      <div class="step done">
+        <div class="step-dot"></div>
+        <div class="step-text">
+          <div class="step-label">Registration Submitted</div>
+          <div class="step-desc">Your institution details have been received</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active">
+        <div class="step-dot"></div>
+        <div class="step-text">
+          <div class="step-label">Under Review</div>
+          <div class="step-desc">Platform admin is reviewing your application</div>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-dot"></div>
+        <div class="step-text">
+          <div class="step-label">Account Activation</div>
+          <div class="step-desc">Access granted to institution dashboard</div>
+        </div>
+      </div>
+    </div>
+    <button class="pending-logout" (click)="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign out
+    </button>
+  </div>
+</div>
+
+<div class="inst-shell" [class.sidebar-collapsed]="!sidebarOpen" *ngIf="!isPending">
+
+  <!-- SIDEBAR -->
+  <aside class="inst-sidebar">
+    <div class="sb-brand">
+      <div><div class="brand-name">ANVAY</div><div class="brand-tag">DISCOVER. JOIN. HOST.</div></div>
+    </div>
+    <div class="sb-role-badge"><span class="role-dot"></span>Institution Admin</div>
+    <nav class="sb-nav">
+      <button class="nav-item" [class.active]="activeView==='dashboard'" (click)="setView('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Dashboard
+      </button>
+      <button class="nav-item" [class.active]="activeView==='events'" (click)="setView('events')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Event Management
+      </button>
+      <button class="nav-item" [class.active]="activeView==='clubs'" (click)="setView('clubs')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg> Club Management
+      </button>
+      <button class="nav-item" [class.active]="activeView==='students'" (click)="setView('students')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Student Management
+      </button>
+    </nav>
+    <button class="sb-logout" (click)="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="inst-main">
+    <header class="inst-topbar">
+      <button class="toggle-btn" (click)="sidebarOpen=!sidebarOpen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="topbar-title">Anvay</span>
+      <span class="role-chip">Institution Admin</span>
+      <div class="topbar-right">
+        <!-- Notifications with nav links -->
+        <div class="notif-wrap">
+          <button class="bell-btn" (click)="toggleNotifications()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="bell-dot" *ngIf="totalNotifCount > 0"></span>
+          </button>
+          <div class="notif-dropdown" *ngIf="showNotifDropdown">
+            <div class="notif-header"><span class="notif-title">Notifications</span><span class="notif-count" *ngIf="totalNotifCount > 0">{{totalNotifCount}}</span></div>
+            <div class="notif-list">
+              <div *ngFor="let n of notifications" class="notif-item" [class.notif-clickable]="n.link" [class.notif-warn]="n.type==='warn'" [class.notif-info]="n.type==='info'" [class.notif-success]="n.type==='success'" (click)="navigateFromNotif(n.link)">
+                <span class="notif-dot"></span><span class="notif-text">{{n.text}}</span>
+                <svg *ngIf="n.link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="notif-backdrop" *ngIf="showNotifDropdown" (click)="showNotifDropdown=false"></div>
+        </div>
+        <!-- Profile dropdown -->
+        <div class="profile-wrap">
+          <div class="user-chip" (click)="toggleProfileMenu()">
+            <div class="user-avatar">{{adminName.charAt(0)}}</div><span>{{adminName}}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="profile-menu" *ngIf="showProfileMenu">
+            <div class="pm-header">
+              <div class="pm-avatar">{{adminName.charAt(0)}}</div>
+              <div><div class="pm-name">{{adminName}}</div><div class="pm-role">Institution Admin</div><div class="pm-inst">{{institutionName}}</div></div>
+            </div>
+            <div class="pm-divider"></div>
+            <button class="pm-item" (click)="logout()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sign Out
+            </button>
+          </div>
+          <div class="notif-backdrop" *ngIf="showProfileMenu" (click)="showProfileMenu=false"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="msg-bar success" *ngIf="message && messageType==='success'">✓ {{message}}</div>
+    <div class="msg-bar error" *ngIf="message && messageType==='error'">✕ {{message}}</div>
+
+    <main class="inst-content">
+
+      <!-- DASHBOARD -->
+      <div *ngIf="activeView==='dashboard'">
+        <div class="page-header"><h1>Institution Dashboard</h1><p>Manage your institution's events, clubs, and students</p></div>
+        <div class="stat-grid">
+          <div class="stat-card sc-green">
+            <div class="stat-icon si-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="stat-body"><div class="stat-num">{{dashStats.totalEvents}}</div><div class="stat-label">Total Events</div><div class="stat-sub"><span class="trend">Events hosted</span></div></div>
+          </div>
+          <div class="stat-card sc-teal">
+            <div class="stat-icon si-teal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <div class="stat-body"><div class="stat-num">{{dashStats.totalStudents}}</div><div class="stat-label">Total Students</div></div>
+          </div>
+          <div class="stat-card sc-purple">
+            <div class="stat-icon si-purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="stat-body"><div class="stat-num">{{dashStats.totalClubs}}</div><div class="stat-label">Active Clubs</div></div>
+          </div>
+          <div class="stat-card sc-amber">
+            <div class="stat-icon si-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="stat-body"><div class="stat-num">{{dashStats.totalPoints}}</div><div class="stat-label">Total Points</div></div>
+          </div>
+        </div>
+        <div class="quick-actions">
+          <h3>Quick Actions</h3>
+          <div class="qa-grid">
+            <button class="qa-btn" (click)="setView('events'); openCreateEvent()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><path d="M12 5v14M5 12h14"/></svg> Create Event
+            </button>
+            <button class="qa-btn" (click)="setView('clubs')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Manage Clubs
+            </button>
+            <button class="qa-btn" (click)="setView('students')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> View Students
+            </button>
+          </div>
+        </div>
+
+        <!-- College Rankings on Dashboard -->
+        <div class="dash-section">
+          <div class="dash-section-header">
+            <h3>🏆 College Leaderboard</h3>
+            <span class="dash-section-sub">Institutions ranked by total points earned</span>
+          </div>
+          <div *ngIf="collegeLbLoading" class="loading-state"><div class="spinner"></div></div>
+          <div *ngIf="!collegeLbLoading" class="data-card">
+            <table class="data-table">
+              <thead><tr><th>Rank</th><th>Institution</th><th>Total Points</th><th>Students</th><th>Events</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let c of collegeLb; let i=index" [class.my-inst-row]="c.institutionId===institutionId">
+                  <td>
+                    <span class="rank-badge-inst" [class.gold]="i===0" [class.silver]="i===1" [class.bronze]="i===2">
+                      {{i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1)}}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="inst-cell">
+                      <div class="inst-avatar">🏫</div>
+                      <div class="cell-primary">{{c.institutionName}}<span *ngIf="c.institutionId===institutionId" class="you-inst-badge"> ← You</span></div>
+                    </div>
+                  </td>
+                  <td><strong class="pts-num">{{c.totalPoints || 0}}</strong></td>
+                  <td>{{c.studentCount || 0}}</td>
+                  <td>{{c.eventCount || 0}}</td>
+                </tr>
+                <tr *ngIf="collegeLb.length===0"><td colspan="5" class="empty-cell">No data yet</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENTS -->
+      <div *ngIf="activeView==='events' && !selectedEvent">
+        <div class="page-header-row">
+          <div><h1>Event Management</h1><p>Create and manage events at your institution</p></div>
+          <button class="btn-primary" (click)="openCreateEvent()">+ Create Event</button>
+        </div>
+
+        <!-- Event filter toolbar -->
+        <div class="filters-bar">
+          <div class="search-wrap">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input [(ngModel)]="eventsSearch" placeholder="Search events..." class="search-input">
+            </div>
+          </div>
+          <select class="filter-select" [(ngModel)]="eventsFilterCategory">
+            <option value="">All Categories</option>
+            <option *ngFor="let c of availableEventCategories" [value]="c">{{c}}</option>
+          </select>
+          <div class="filter-date-group">
+            <label class="filter-date-label">From</label>
+            <input type="date" class="filter-date" [(ngModel)]="eventsFilterDateFrom">
+            <label class="filter-date-label">To</label>
+            <input type="date" class="filter-date" [(ngModel)]="eventsFilterDateTo">
+          </div>
+          <button class="btn-clear-filters" *ngIf="eventsSearch || eventsFilterCategory || eventsFilterDateFrom || eventsFilterDateTo" (click)="clearEventFilters()">&#10005; Clear</button>
+        </div>
+
+        <div *ngIf="eventsLoading" class="loading-state"><div class="spinner"></div></div>
+        <ng-container *ngIf="!eventsLoading">
+
+          <!-- Happening Now -->
+          <div class="ev-section" *ngIf="currentEventsInst.length > 0">
+            <div class="ev-section-header"><span class="ev-section-dot current-dot"></span>Happening Now <span class="ev-section-count">{{currentEventsInst.length}}</span></div>
+            <div class="data-card">
+              <table class="data-table">
+                <thead><tr><th>Event Name</th><th>Category</th><th>Date</th><th>Location</th><th>Capacity</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let ev of currentEventsInst">
+                    <td><div class="cell-primary">{{ev.eventName}}</div><div class="cell-sub">{{ev.description | slice:0:60}}</div></td>
+                    <td><span class="tag">{{ev.category}}</span></td>
+                    <td>{{ev.startDate | date:'mediumDate'}}</td>
+                    <td>{{ev.location}}</td>
+                    <td>{{ev.maxParticipants}}</td>
+                    <td><div class="action-btns">
+                      <button class="btn-sm btn-view" (click)="viewEventParticipants(ev)">👥 Members</button>
+                      <button class="btn-sm btn-end-event" (click)="endEvent(ev.eventId)">⏹ End</button>
+                      <button class="btn-sm btn-edit" (click)="openEditEvent(ev)">Edit</button>
+                      <button class="btn-sm btn-del" (click)="deleteEvent(ev.eventId)">Delete</button>
+                    </div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Upcoming -->
+          <div class="ev-section" *ngIf="upcomingEventsInst.length > 0">
+            <div class="ev-section-header"><span class="ev-section-dot upcoming-dot"></span>Upcoming <span class="ev-section-count">{{upcomingEventsInst.length}}</span></div>
+            <div class="data-card">
+              <table class="data-table">
+                <thead><tr><th>Event Name</th><th>Category</th><th>Date</th><th>Location</th><th>Capacity</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let ev of upcomingEventsInst">
+                    <td><div class="cell-primary">{{ev.eventName}}</div><div class="cell-sub">{{ev.description | slice:0:60}}</div></td>
+                    <td><span class="tag">{{ev.category}}</span></td>
+                    <td>{{ev.startDate | date:'mediumDate'}}</td>
+                    <td>{{ev.location}}</td>
+                    <td>{{ev.maxParticipants}}</td>
+                    <td><div class="action-btns">
+                      <button class="btn-sm btn-view" (click)="viewEventParticipants(ev)">👥 Members</button>
+                      <button class="btn-sm btn-end-event" (click)="endEvent(ev.eventId)">⏹ End</button>
+                      <button class="btn-sm btn-edit" (click)="openEditEvent(ev)">Edit</button>
+                      <button class="btn-sm btn-del" (click)="deleteEvent(ev.eventId)">Delete</button>
+                    </div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Past / Ended -->
+          <div class="ev-section" *ngIf="pastEventsInst.length > 0">
+            <div class="ev-section-header"><span class="ev-section-dot past-dot"></span>Past / Ended <span class="ev-section-count">{{pastEventsInst.length}}</span></div>
+            <div class="data-card">
+              <table class="data-table">
+                <thead><tr><th>Event Name</th><th>Category</th><th>Date</th><th>Location</th><th>Capacity</th><th>Actions</th></tr></thead>
+                <tbody>
+                  <tr *ngFor="let ev of pastEventsInst" class="row-past">
+                    <td><div class="cell-primary">{{ev.eventName}}</div><div class="cell-sub">{{ev.description | slice:0:60}}</div></td>
+                    <td><span class="tag">{{ev.category}}</span></td>
+                    <td>{{ev.startDate | date:'mediumDate'}}</td>
+                    <td>{{ev.location}}</td>
+                    <td>{{ev.maxParticipants}}</td>
+                    <td><div class="action-btns">
+                      <button class="btn-sm btn-view" (click)="viewEventParticipants(ev)">👥 Members</button>
+                      <button class="btn-sm btn-winners" *ngIf="(ev.hasWinners !== false) && ev.status==='ended' && !ev.winnersStatus" (click)="openWinnersModal(ev)">🏆 Winners</button>
+                      <span class="winners-status-badge pending" *ngIf="ev.winnersStatus === 'pending'">⏳ Pending</span>
+                      <span class="winners-status-badge approved" *ngIf="ev.winnersStatus === 'approved'">✅ Awarded</span>
+                      <span class="badge-ev-ended">Ended</span>
+                      <button class="btn-sm btn-del" (click)="deleteEvent(ev.eventId)">Delete</button>
+                    </div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div *ngIf="events.length===0" class="empty-state-card">No events yet. Create your first event!</div>
+        </ng-container>
+      </div>
+
+      <!-- EVENT PARTICIPANTS DETAIL -->
+      <div *ngIf="activeView==='events' && selectedEvent">
+        <div class="page-header-row">
+          <div>
+            <button class="back-btn" (click)="selectedEvent=null">← Back to Events</button>
+            <h1>{{selectedEvent.eventName}}</h1>
+            <p>Registered participants — {{selectedEventParticipants.length}} registered</p>
+          </div>
+        </div>
+        <div *ngIf="selectedEventParticipantsLoading" class="loading-state"><div class="spinner"></div></div>
+        <div *ngIf="!selectedEventParticipantsLoading" class="data-card">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Student</th><th>Email</th><th>Status</th><th>Points Earned</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let p of selectedEventParticipants; let i=index">
+                <td>{{i+1}}</td>
+                <td>
+                  <div class="student-cell">
+                    <div class="student-avatar">{{p.user?.firstName?.charAt(0)||'?'}}</div>
+                    <div class="cell-primary">{{p.user?.firstName}} {{p.user?.lastName}}</div>
+                  </div>
+                </td>
+                <td>{{p.user?.email}}</td>
+                <td><span class="status-badge badge-active">{{p.status}}</span></td>
+                <td>
+                  <strong *ngIf="p.points_earned" class="pts-earned">+{{p.points_earned}} pts</strong>
+                  <span *ngIf="!p.points_earned" class="no-pts">—</span>
+                </td>
+              </tr>
+              <tr *ngIf="selectedEventParticipants.length===0"><td colspan="5" class="empty-cell">No participants registered yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CLUBS -->
+      <div *ngIf="activeView==='clubs' && !selectedClub">
+        <div class="page-header-row">
+          <div><h1>Club Management</h1><p>Create and manage clubs at your institution</p></div>
+          <button class="btn-primary" (click)="openCreateClub()">+ Create Club</button>
+        </div>
+        <div *ngIf="clubsLoading" class="loading-state"><div class="spinner"></div></div>
+        <div *ngIf="!clubsLoading">
+          <div class="data-card" style="margin-bottom:24px">
+            <div class="section-title">Your Clubs</div>
+            <table class="data-table">
+              <thead><tr><th>Club Name</th><th>Type</th><th>Members</th><th>Join Requests</th><th>Leadership Apps</th><th>Created</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let cl of clubs" (click)="viewClubDetail(cl)" class="table-row-hover">
+                  <td><div class="cell-primary">{{cl.clubName}}</div></td>
+                  <td><span class="tag">{{$any(cl).type || cl.category}}</span></td>
+                  <td><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" style="vertical-align:middle;margin-right:4px"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>{{cl.membersCount}}</td>
+                  <td>{{cl.joinRequestsCount > 0 ? cl.joinRequestsCount + ' pending' : 'None'}}</td>
+                  <td>
+                    <span *ngIf="cl.leadershipAppsCount>0" class="badge-leadership">{{cl.leadershipAppsCount}} pending</span>
+                    <span *ngIf="cl.leadershipAppsCount===0" class="text-muted">None</span>
+                  </td>
+                  <td>{{cl.createdDate | date:'mediumDate'}}</td>
+                  <td (click)="$event.stopPropagation()">
+                    <div class="action-btns">
+                      <button class="btn-sm btn-edit" (click)="openEditClub(cl)">Edit</button>
+                      <button class="btn-sm btn-view" (click)="viewClubDetail(cl)">Members</button>
+                      <button class="btn-sm btn-del" (click)="deleteClub(cl.clubId)">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="clubs.length===0"><td colspan="7" class="empty-cell">No clubs yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLUB DETAIL -->
+      <div *ngIf="activeView==='clubs' && selectedClub">
+        <div class="page-header" style="display:flex;align-items:center;gap:12px">
+          <button class="back-btn" (click)="selectedClub=null">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div><h1>{{selectedClub.clubName}}</h1><p>{{$any(selectedClub).type || selectedClub.category}} · {{selectedClub.membersCount}} members</p></div>
+        </div>
+        <div class="tab-bar">
+          <button [class.tab-active]="clubDetailTab==='members'" (click)="switchClubTab('members')">Members ({{clubMembers.length}})</button>
+          <button [class.tab-active]="clubDetailTab==='requests'" (click)="switchClubTab('requests')">Join Requests</button>
+          <button [class.tab-active]="clubDetailTab==='leadership'" (click)="switchClubTab('leadership')">Leadership Apps ({{clubLeadershipApps.length}})</button>
+        </div>
+        <div class="data-card">
+          <div *ngIf="clubDetailTab==='members'">
+            <table class="data-table">
+              <thead><tr><th>Member</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let m of clubMembers">
+                  <td>
+                    <div class="student-cell">
+                      <div class="student-avatar">{{m.user?.firstName?.charAt(0) || '?'}}</div>
+                      <div class="cell-primary">{{m.user?.firstName}} {{m.user?.lastName}}</div>
+                    </div>
+                  </td>
+                  <td>{{m.user?.email || '—'}}</td>
+                  <td>
+                    <span *ngIf="m.user?.role === 'club_leader' && m.user?.leadingClubId === selectedClub!.clubId" class="badge-role-leader">👑 Club Leader</span>
+                    <span *ngIf="!(m.user?.role === 'club_leader' && m.user?.leadingClubId === selectedClub!.clubId)" class="badge-role-member">Member</span>
+                  </td>
+                  <td><span class="status-badge" [class.badge-active]="m.status==='APPROVED'" [class.badge-pending]="m.status==='PENDING'">{{m.status}}</span></td>
+                  <td>
+                    <button *ngIf="m.user?.role === 'club_leader' && m.user?.leadingClubId === selectedClub!.clubId"
+                            class="btn-sm btn-danger" (click)="removeClubLeader(selectedClub!.clubId, m.userId)">Remove Leader</button>
+                    <span *ngIf="!(m.user?.role === 'club_leader' && m.user?.leadingClubId === selectedClub!.clubId)">—</span>
+                  </td>
+                </tr>
+                <tr *ngIf="clubMembers.length===0"><td colspan="5" class="empty-cell">No members yet</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="clubDetailTab==='requests'">
+            <table class="data-table">
+              <thead><tr><th>Member</th><th>Email</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let m of clubMembers">
+                  <td>
+                    <div class="student-cell">
+                      <div class="student-avatar">{{m.user?.firstName?.charAt(0) || '?'}}</div>
+                      <div class="cell-primary">{{m.user?.firstName || ('User #' + m.userId)}}</div>
+                    </div>
+                  </td>
+                  <td>{{m.user?.email || '—'}}</td>
+                  <td><span class="status-badge badge-pending">{{m.status}}</span></td>
+                  <td>
+                    <div class="action-btns">
+                      <button class="btn-sm btn-success" (click)="approveJoinRequest(selectedClub!.clubId, m.id)">Approve</button>
+                      <button class="btn-sm btn-danger" (click)="rejectJoinRequest(selectedClub!.clubId, m.id)">Reject</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="clubMembers.length===0"><td colspan="3" class="empty-cell">No pending requests</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="clubDetailTab==='leadership'">
+            <div class="leadership-list">
+              <div class="leadership-card" *ngFor="let app of clubLeadershipApps">
+                <div class="leader-avatar">{{app.user?.firstName?.charAt(0) || '?'}}</div>
+                <div class="leader-info">
+                  <div class="leader-name">{{app.user?.firstName}} {{app.user?.lastName}}</div>
+                  <div class="leader-email">{{app.user?.email}}</div>
+                  <div class="leader-exp">{{app.experience}}</div>
+                  <div class="leader-date">Applied: {{app.appliedAt | date:'mediumDate'}}</div>
+                </div>
+                <div class="leader-actions">
+                  <button class="btn-success-full" (click)="approveLeadership(app.applicationId)">✓ Approve</button>
+                  <button class="btn-reject-full" (click)="rejectLeadership(app.applicationId)">✕ Reject</button>
+                </div>
+              </div>
+              <div *ngIf="clubLeadershipApps.length===0" class="empty-cell">No pending leadership applications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDENTS -->
+      <div *ngIf="activeView==='students'">
+        <div class="page-header"><h1>Student Management</h1><p>View and track student performance</p></div>
+        <div *ngIf="studentsLoading" class="loading-state"><div class="spinner"></div></div>
+        <div *ngIf="!studentsLoading">
+          <div class="data-card" style="margin-bottom:24px">
+            <div class="section-title">Institution Leaderboard</div>
+            <table class="data-table">
+              <thead><tr><th>Rank</th><th>Student</th><th>Email</th><th>Total Points</th><th>Clubs Joined</th><th>Events</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let s of students; let i=index">
+                  <td><span class="rank-badge" [class.rank-top]="i<3">{{getRankLabel(i)}}</span></td>
+                  <td>
+                    <div class="student-cell">
+                      <div class="student-avatar">{{s.firstName?.charAt(0)||'?'}}</div>
+                      <div>
+                        <div class="cell-primary">{{s.firstName}} {{s.lastName}} <span *ngIf="s.role==='club_leader'" class="badge-leader-crown" title="Club Leader">👑</span></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{s.email}}</td>
+                  <td><strong>{{s.totalPoints || 0}}</strong></td>
+                  <td>{{s.joinedClubsCount || 0}}</td>
+                  <td>{{s.registeredEventsCount || 0}}</td>
+                  <td><button class="btn-sm btn-del" (click)="removeStudent(s.userId)">Remove</button></td>
+                </tr>
+                <tr *ngIf="students.length===0"><td colspan="7" class="empty-cell">No students registered yet</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay" *ngIf="showEventModal" (click)="showEventModal=false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{editingEvent ? 'Edit Event' : 'Create New Event'}}</h2>
+      <button class="modal-close" (click)="showEventModal=false">×</button>
+    </div>
+    <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="modal-form">
+      <!-- Club -->
+      <div class="form-group">
+        <label>Club *</label>
+        <select formControlName="clubId" class="input-field">
+          <option [ngValue]="null" disabled>Select a club</option>
+          <option *ngFor="let c of clubs" [ngValue]="c.clubId">{{c.clubName}}</option>
+        </select>
+        <div *ngIf="clubs.length===0" style="font-size:.75rem;color:#d97706;margin-top:4px;">No clubs found — create a club first before adding events.</div>
+      </div>
+
+      <!-- Event Title -->
+      <div class="form-group">
+        <label>Event Title *</label>
+        <input formControlName="eventName" class="input-field" placeholder="Enter event title">
+        <div class="field-error" *ngIf="eventForm.get('eventName')?.errors?.['required'] && eventForm.get('eventName')?.touched">Event title is required</div>
+        <div class="field-error" *ngIf="eventForm.get('eventName')?.errors?.['pattern'] && eventForm.get('eventName')?.touched">Please enter a valid name (letters required)</div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label>Description</label>
+        <textarea formControlName="description" class="input-field" rows="3" placeholder="Event description"></textarea>
+      </div>
+
+      <!-- Category + Contact Number -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category *</label>
+          <select formControlName="category" class="input-field">
+            <option value="">Select category</option>
+            <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+          </select>
+          <div class="field-error" *ngIf="eventForm.get('category')?.errors?.['required'] && eventForm.get('category')?.touched">Category is required</div>
+        </div>
+        <div class="form-group">
+          <label>Contact Number *</label>
+          <input formControlName="contactNumber" class="input-field" placeholder="10-digit number" maxlength="10">
+          <div class="field-error" *ngIf="contactNumberError">{{contactNumberError}}</div>
+          <div class="field-error" *ngIf="eventForm.get('contactNumber')?.errors?.['required'] && eventForm.get('contactNumber')?.touched">Contact number is required</div>
+          <div class="field-error" *ngIf="eventForm.get('contactNumber')?.errors?.['pattern'] && eventForm.get('contactNumber')?.touched">Must be a 10-digit Indian number starting with 6–9</div>
+        </div>
+      </div>
+
+      <!-- Start Date + End Date -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date *</label>
+          <input formControlName="startDate" type="datetime-local" class="input-field">
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input formControlName="endDate" type="datetime-local" class="input-field">
+          <div class="field-error" *ngIf="endDateError">{{endDateError}}</div>
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="form-group">
+        <label>Location</label>
+        <input formControlName="location" class="input-field" placeholder="Event location">
+        <div class="field-error" *ngIf="eventForm.get('location')?.errors?.['required'] && eventForm.get('location')?.touched">Location is required</div>
+        <div class="field-error" *ngIf="eventForm.get('location')?.errors?.['pattern'] && eventForm.get('location')?.touched">Location must contain at least one letter</div>
+      </div>
+
+      <!-- Registration Deadline + Fee -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Registration Deadline</label>
+          <input formControlName="registrationDeadline" type="datetime-local" class="input-field" [max]="eventForm.value.startDate">
+          <div class="field-error" *ngIf="deadlineError">{{deadlineError}}</div>
+        </div>
+        <div class="form-group">
+          <label>Registration Fee (₹)</label>
+          <input formControlName="registrationFee" type="number" class="input-field" placeholder="0">
+          <div class="field-error" *ngIf="eventForm.get('registrationFee')?.errors?.['min'] && eventForm.get('registrationFee')?.touched">Registration fee cannot be negative</div>
+        </div>
+      </div>
+
+      <!-- Max Participants Slider -->
+      <div class="form-group">
+        <label>Max Participants *: <strong class="slider-val">{{participantsSlider}}</strong></label>
+        <input type="range" min="1" max="1000" step="1" [value]="participantsSlider" (input)="onSliderChange(+$any($event.target).value)" class="slider-input">
+      </div>
+
+      <!-- Event Banner Image -->
+      <div class="form-group">
+        <label>Event Banner Image</label>
+        <input type="file" accept="image/*" (change)="onEventImageSelected($event)" class="input-field file-input" id="eventImageInput">
+        <label for="eventImageInput" class="file-label">📷 Choose Image</label>
+        <div class="image-preview" *ngIf="eventImagePreview">
+          <img [src]="eventImagePreview" alt="Preview" class="img-preview">
+          <button type="button" class="btn-remove-img" (click)="eventImageData=''; eventImagePreview=''">✕</button>
+        </div>
+      </div>
+
+      <!-- Event Rules -->
+      <div class="form-group">
+        <label>Event Rules</label>
+        <textarea formControlName="eventRules" class="input-field" rows="2" placeholder="Enter event rules and guidelines"></textarea>
+      </div>
+
+      <!-- Has Winners -->
+      <div class="form-group form-check-group">
+        <label class="checkbox-label">
+          <input formControlName="hasWinners" type="checkbox" class="checkbox-input">
+          <span>This event awards winners (enables points submission after event ends)</span>
+        </label>
+      </div>
+
+      <div class="modal-msg error" *ngIf="message && messageType==='error'">&#10005; {{message}}</div>
+      <div class="modal-msg success" *ngIf="message && messageType==='success'">&#10003; {{message}}</div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="showEventModal=false">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="eventForm.invalid || isSaving">
+          <span *ngIf="isSaving" class="btn-spinner"></span>
+          {{isSaving ? 'Saving...' : (editingEvent ? 'Update Event' : 'Create Event')}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CLUB MODAL -->
+<div class="modal-overlay" *ngIf="showClubModal" (click)="showClubModal=false">
+  <div class="modal-box small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{editingClub ? 'Edit Club' : 'Create New Club'}}</h2>
+      <button class="modal-close" (click)="showClubModal=false">×</button>
+    </div>
+    <form [formGroup]="clubForm" (ngSubmit)="saveClub()" class="modal-form">
+      <div class="form-group">
+        <label>Club Name *</label>
+        <input formControlName="clubName" class="input-field" placeholder="Enter club name">
+        <div class="field-error" *ngIf="clubForm.get('clubName')?.errors?.['required'] && clubForm.get('clubName')?.touched">Club name is required</div>
+        <div class="field-error" *ngIf="clubForm.get('clubName')?.errors?.['pattern'] && clubForm.get('clubName')?.touched">Please enter a valid name (letters required)</div>
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select formControlName="category" class="input-field">
+          <option value="">Select category</option>
+          <option *ngFor="let c of clubCategories" [value]="c">{{c}}</option>
+        </select>
+        <div class="field-error" *ngIf="clubForm.get('category')?.errors?.['required'] && clubForm.get('category')?.touched">Category is required</div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="showClubModal=false">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="clubForm.invalid">{{editingClub ? 'Update' : 'Create'}}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Student Join Request Approval Modal -->
+<div class="modal-overlay" *ngIf="approveModal" (click)="approveModal=false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="28" height="28"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    </div>
+    <h2 class="modal-title">Approve Student Request</h2>
+    <p class="modal-desc">Before approving, please verify that the student's details and email are valid.</p>
+    <label class="verify-check">
+      <input type="checkbox" [(ngModel)]="approveVerified">
+      <span class="check-box"></span>
+      <span class="check-label">I have verified the email and details provided are valid</span>
+    </label>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" (click)="approveModal=false">Cancel</button>
+      <button class="modal-btn-approve" [disabled]="!approveVerified" (click)="confirmApprove()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+        Approve Student
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Winners Modal -->
+<div class="modal-overlay" *ngIf="winnersModal" (click)="winnersModal=false">
+  <div class="winners-modal" (click)="$event.stopPropagation()">
+    <div class="winners-header">
+      <div class="winners-trophy">🏆</div>
+      <h2 class="winners-title">Award Winners</h2>
+      <p class="winners-subtitle">{{ winnersEventName }}</p>
+    </div>
+    <div *ngIf="winnersLoading" class="winners-loading">Loading participants...</div>
+    <div *ngIf="!winnersLoading">
+      <div *ngIf="eventParticipants.length === 0" class="winners-empty">No participants registered for this event.</div>
+      <div *ngIf="eventParticipants.length > 0" class="winners-body">
+        <p class="winners-hint">Select any rank(s) you want to award — all are optional.</p>
+        <div class="winner-row">
+          <div class="winner-badge gold">🥇 1st Place <span class="pts-badge">+100 pts</span></div>
+          <select class="winner-select" [(ngModel)]="winner1">
+            <option [ngValue]="null">— Not awarded —</option>
+            <option *ngFor="let p of eventParticipants" [ngValue]="p.userId">
+              {{ p.user?.firstName }} {{ p.user?.lastName }}
+            </option>
+          </select>
+        </div>
+        <div class="winner-row">
+          <div class="winner-badge silver">🥈 2nd Place <span class="pts-badge">+75 pts</span></div>
+          <select class="winner-select" [(ngModel)]="winner2">
+            <option [ngValue]="null">— Not awarded —</option>
+            <option *ngFor="let p of eventParticipants" [ngValue]="p.userId">
+              {{ p.user?.firstName }} {{ p.user?.lastName }}
+            </option>
+          </select>
+        </div>
+        <div class="winner-row">
+          <div class="winner-badge bronze">🥉 3rd Place <span class="pts-badge">+50 pts</span></div>
+          <select class="winner-select" [(ngModel)]="winner3">
+            <option [ngValue]="null">— Not awarded —</option>
+            <option *ngFor="let p of eventParticipants" [ngValue]="p.userId">
+              {{ p.user?.firstName }} {{ p.user?.lastName }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="winners-actions">
+        <button class="modal-btn-cancel" (click)="winnersModal=false">Cancel</button>
+        <button class="modal-btn-approve" *ngIf="eventParticipants.length > 0" (click)="submitWinners()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+          Award Points
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

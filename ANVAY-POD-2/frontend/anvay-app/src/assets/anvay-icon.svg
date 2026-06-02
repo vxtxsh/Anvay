@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 130" fill="none">
+  <defs>
+    <!-- Top-to-bottom gradient: lime-green → teal → dark-teal -->
+    <linearGradient id="grad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%"   stop-color="#6ee7b7"/>
+      <stop offset="22%"  stop-color="#2dd4bf"/>
+      <stop offset="55%"  stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#0d4f42"/>
+    </linearGradient>
+
+    <!-- Slightly offset gradient for the second strand (adds depth) -->
+    <linearGradient id="grad2" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%"   stop-color="#4ade80"/>
+      <stop offset="28%"  stop-color="#22d3ee"/>
+      <stop offset="58%"  stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#134e4a"/>
+    </linearGradient>
+  </defs>
+
+  <!--
+    Two ribbon bands interweaving to form letter A.
+
+    Band 1: bottom-left outer → apex → bottom-right inner
+    Band 2: bottom-right outer → apex → bottom-left inner
+
+    Crossing points:
+      • Apex (top): Band 1 goes OVER Band 2
+      • Left middle (~x=38, y=64): Band 1 outer goes OVER Band 2 inner
+      • Right middle (~x=82, y=64): Band 2 outer goes OVER Band 1 inner
+
+    Drawing order implements the weave:
+      Step 1 – full Band 2
+      Step 2 – white masks at crossings
+      Step 3 – full Band 1 (now on top everywhere it should be)
+      Step 4 – restore Band 2 "over" portions on right side
+  -->
+
+  <!-- ═══ STEP 1 — Band 2 fully (right-outer + left-inner) ═══ -->
+  <path
+    d="M 104 121
+       C 100 108, 90 86, 75 62
+       C 68 50, 63 35, 61 12
+       C 60 8,  60 6,  60 5
+       C 59 4,  58 4,  57 5
+       C 56 6,  54 9,  52 14
+       L 40 50
+       C 35 65, 34 82, 38 96
+       C 40 106, 40 115, 36 121"
+    stroke="url(#grad2)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ═══ STEP 2 — White masks at crossing points ═══ -->
+
+  <!-- Left crossing: ~(38, 62) — Band 1 outer will go over Band 2 inner here -->
+  <path d="M 44 54 C 40 59 37 64 35 70"
+        stroke="white" stroke-width="17" stroke-linecap="round"/>
+
+  <!-- Apex crossing: Band 1 outer goes over Band 2 at the very tip -->
+  <path d="M 61 12 C 60 8 60 6 60 5 C 59 4 58 4 57 5 C 56 6 55 8 54 12"
+        stroke="white" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- ═══ STEP 3 — Band 1 fully (left-outer + right-inner) ═══ -->
+  <path
+    d="M 16 121
+       C 20 108, 30 86, 45 62
+       C 52 50, 57 35, 59 12
+       C 60 8,  60 6,  60 5
+       C 61 4,  62 4,  63 5
+       C 64 6,  66 9,  68 14
+       L 80 50
+       C 85 65, 86 82, 82 96
+       C 80 106, 80 115, 84 121"
+    stroke="url(#grad)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ═══ STEP 4 — Restore Band 2 "over" sections ═══ -->
+
+  <!-- Right crossing: ~(82, 62) — Band 2 outer goes over Band 1 inner -->
+  <path d="M 76 54 C 80 59 83 64 85 70"
+        stroke="url(#grad2)" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- ═══ CROSSBAR ═══ -->
+  <!-- Sits across both strands at ~y=80 -->
+  <path d="M 37 84 Q 60 74 83 84"
+        stroke="url(#grad)" stroke-width="11" stroke-linecap="round"/>
+
+  <!-- White mask where crossbar overlaps Band 2 inner (right half of crossbar goes under Band 2) -->
+  <path d="M 68 80 Q 76 77 83 84"
+        stroke="white" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- Restore Band 2 over the crossbar on the right side -->
+  <path d="M 80 50 C 85 65 86 82 82 96"
+        stroke="url(#grad2)" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- Restore crossbar left half (over Band 2 inner on left side) -->
+  <path d="M 37 84 Q 44 78 52 78"
+        stroke="url(#grad)" stroke-width="11" stroke-linecap="round"/>
+</svg>

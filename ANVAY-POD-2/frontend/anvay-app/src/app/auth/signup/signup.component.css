@@ -1,0 +1,58 @@
+.signup-shell { display:flex; min-height:100vh; font-family:'Plus Jakarta Sans',sans-serif; background:#f8fafc; }
+
+/* ── Left Panel ── */
+.signup-left {
+  flex:1;
+  background:linear-gradient(160deg,#052e16 0%,#14532d 45%,#065f46 75%,#0f766e 100%);
+  display:flex; align-items:center; justify-content:center;
+  padding:56px 48px; position:relative; overflow:hidden;
+  border-right:none;
+}
+.signup-left::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 20% 30%,rgba(52,211,153,.15) 0%,transparent 55%),
+              radial-gradient(ellipse at 80% 75%,rgba(13,148,136,.12) 0%,transparent 55%);
+  pointer-events:none;
+}
+.left-content { position:relative; z-index:1; max-width:360px; }
+.brand-area { margin-bottom:44px; }
+.brand-name { font-family:'Space Grotesk',sans-serif; font-size:2.1rem; font-weight:700; color:#fff; letter-spacing:6px; }
+.brand-tagline { font-size:.62rem; color:#6ee7b7; letter-spacing:3px; text-transform:uppercase; margin-top:5px; font-weight:600; }
+.left-content h2 { font-size:1.5rem; font-weight:800; color:#fff; margin-bottom:12px; }
+.left-content p { color:rgba(255,255,255,.65); font-size:.875rem; line-height:1.75; margin-bottom:32px; }
+
+.left-features { display:flex; flex-direction:column; gap:18px; }
+.lf-item { display:flex; align-items:center; gap:12px; font-size:.875rem; font-weight:500; color:rgba(255,255,255,.85); }
+.lf-item svg { color:#34d399; flex-shrink:0; }
+
+/* ── Right Panel ── */
+.signup-right { width:520px; display:flex; align-items:center; justify-content:center; padding:40px; background:#fff; overflow-y:auto; }
+.signup-card { width:100%; max-width:440px; }
+.signup-card h1 { font-size:1.65rem; font-weight:800; color:#0f172a; margin-bottom:4px; }
+.sub { color:#64748b; font-size:.875rem; margin-bottom:24px; }
+
+.type-toggle { display:flex; gap:4px; background:#f1f5f9; padding:4px; border-radius:12px; margin-bottom:24px; }
+.type-toggle button { flex:1; padding:10px; border:none; background:none; border-radius:9px; font-size:.875rem; font-weight:500; color:#64748b; cursor:pointer; transition:.2s; font-family:inherit; }
+.type-toggle button.active { background:#fff; color:#0f172a; font-weight:700; box-shadow:0 1px 6px rgba(0,0,0,.1); }
+
+.error-alert { display:flex; align-items:center; gap:8px; background:#fee2e2; color:#dc2626; padding:12px 16px; border-radius:10px; font-size:.875rem; margin-bottom:16px; font-weight:500; border:1px solid #fecaca; }
+.info-box { display:flex; align-items:flex-start; gap:8px; background:#f0fdf4; color:#15803d; padding:12px 14px; border-radius:10px; font-size:.82rem; line-height:1.5; border:1px solid #bbf7d0; margin-bottom:4px; }
+.info-box svg { flex-shrink:0; margin-top:1px; }
+
+.signup-form { display:flex; flex-direction:column; gap:14px; }
+.form-group { display:flex; flex-direction:column; gap:5px; }
+.form-group label { font-size:.75rem; font-weight:700; color:#374151; text-transform:uppercase; letter-spacing:.4px; }
+.req { color:#ef4444; }
+.form-input { padding:12px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:.875rem; color:#0f172a; outline:none; transition:.2s; font-family:inherit; background:#f8fafc; width:100%; box-sizing:border-box; }
+.form-input:focus { border-color:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,.1); background:#fff; }
+.field-hint { font-size:.75rem; color:#94a3b8; margin-top:2px; }
+
+.btn-signup { padding:14px; border:none; border-radius:12px; background:linear-gradient(135deg,#052e16,#16a34a); color:#fff; font-size:.9rem; font-weight:700; cursor:pointer; transition:.2s; margin-top:4px; width:100%; font-family:inherit; letter-spacing:.3px; }
+.btn-signup:hover:not(:disabled) { opacity:.9; transform:translateY(-1px); box-shadow:0 6px 24px rgba(5,46,22,.4); }
+.btn-signup:disabled { opacity:.5; cursor:not-allowed; }
+
+.footer-link { margin-top:20px; text-align:center; color:#64748b; font-size:.875rem; }
+.link { color:#16a34a; font-weight:700; text-decoration:none; }
+.link:hover { text-decoration:underline; }
+
+@media(max-width:768px) { .signup-left { display:none; } .signup-right { width:100%; } }

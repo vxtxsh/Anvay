@@ -1,0 +1,500 @@
+{
+  "info": {
+    "_postman_id": "anvay-club-api",
+    "name": "Anvay Club Management API",
+    "description": "REST API collection for testing Club Management endpoints (US16P2_12 & US16P2_13)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Club Dashboard",
+      "item": [
+        {
+          "name": "Get All Clubs by Institution",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/clubs/institution/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs",
+                "institution",
+                "1"
+              ]
+            },
+            "description": "Retrieve dashboard data for all clubs in an institution (US16P2_12)\n\nReturns:\n- clubId\n- clubName\n- type (category)\n- membersCount\n- joinRequestsCount\n- leadershipAppsCount\n- createdDate"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Club Management",
+      "item": [
+        {
+          "name": "Create Club",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"institutionId\": 1,\n  \"clubName\": \"Tech Innovation Club\",\n  \"category\": \"TECHNOLOGY\",\n  \"memberCount\": 0\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/clubs",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs"
+              ]
+            },
+            "description": "Create a new club"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Club by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/clubs/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs",
+                "1"
+              ]
+            },
+            "description": "Retrieve a specific club details"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Club",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clubName\": \"Advanced Tech Club\",\n  \"category\": \"SCIENCE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/clubs/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs",
+                "1"
+              ]
+            },
+            "description": "Update club details (US16P2_13)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Club",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/clubs/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs",
+                "1"
+              ]
+            },
+            "description": "Delete a club"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Club Members",
+      "item": [
+        {
+          "name": "Get All Club Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/clubs/1/members",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs",
+                "1",
+                "members"
+              ]
+            },
+            "description": "Get all members of a club (US16P2_13)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Approved Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/clubs/1/members/approved",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clubs",
+                "1",
+                "members",
+                "approved"
+              ]
+            },
+            "description": "Get only approved members of a club"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "item": [
+        {
+          "name": "Get Event by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events",
+                "1"
+              ]
+            },
+            "description": "Get event details"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Events by Club",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/club/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events",
+                "club",
+                "1"
+              ]
+            },
+            "description": "Get all events for a specific club"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Event",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clubId\": 1,\n  \"eventName\": \"Tech Workshop 2026\",\n  \"description\": \"Learn Web Development\",\n  \"eventDate\": \"2026-04-15T10:00:00\",\n  \"location\": \"Auditorium\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events"
+              ]
+            },
+            "description": "Create a new event"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Event",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventName\": \"Advanced Web Workshop\",\n  \"location\": \"Main Hall\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events",
+                "1"
+              ]
+            },
+            "description": "Update event details"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Event",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/events/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "events",
+                "1"
+              ]
+            },
+            "description": "Delete an event"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Institutions",
+      "item": [
+        {
+          "name": "Get All Institutions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/institutions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "institutions"
+              ]
+            },
+            "description": "Get all institutions"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Institution",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Institute\",\n  \"location\": \"New York\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/institutions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "institutions"
+              ]
+            },
+            "description": "Create a new institution"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "item": [
+        {
+          "name": "Get All Members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/members",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "members"
+              ]
+            },
+            "description": "Get all members/students"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Member by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/members/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "members",
+                "1"
+              ]
+            },
+            "description": "Get specific member details"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Get Payments by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/payments/user/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "payments",
+                "user",
+                "1"
+              ]
+            },
+            "description": "Get all payments for a specific user"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"amount\": 500.00,\n  \"status\": \"COMPLETED\",\n  \"description\": \"Club Membership Fee\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/payments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "payments"
+              ]
+            },
+            "description": "Create a new payment"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

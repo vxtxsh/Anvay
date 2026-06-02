@@ -1,0 +1,84 @@
+<div class="pending-shell">
+  <div class="pending-left">
+    <div class="brand-area">
+      <span class="brand-name">ANVAY</span>
+      <span class="brand-tagline">DISCOVER. JOIN. HOST.</span>
+    </div>
+    <div class="left-copy">
+      <h2>Almost<br>There!</h2>
+      <p>Your request has been received. Our admins will review and respond to you shortly.</p>
+    </div>
+    <div class="steps">
+      <div class="step done"><div class="step-dot">✓</div><span>Choose your role</span></div>
+      <div class="step-line"></div>
+      <div class="step done"><div class="step-dot">✓</div><span>Send request</span></div>
+      <div class="step-line"></div>
+      <div class="step active"><div class="step-dot">3</div><span>Await approval</span></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">4</div><span>Login & explore</span></div>
+    </div>
+  </div>
+
+  <div class="pending-right">
+    <div class="pending-card">
+      <div class="status-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+
+      <div class="status-badge">
+        <span class="badge-dot"></span>
+        Pending Approval
+      </div>
+
+      <h1>Request Submitted!</h1>
+      <p class="pending-msg">Your registration request has been submitted successfully. Please wait while the admin reviews your details.</p>
+
+      <div class="timeline">
+        <div class="tl-item tl-done">
+          <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="tl-body">
+            <div class="tl-title">Request Submitted</div>
+            <div class="tl-sub">Your registration request has been sent</div>
+          </div>
+        </div>
+        <div class="tl-line"></div>
+        <div class="tl-item tl-active">
+          <div class="tl-dot tl-pulse"></div>
+          <div class="tl-body">
+            <div class="tl-title">Under Review</div>
+            <div class="tl-sub">Admin is reviewing your details</div>
+          </div>
+        </div>
+        <div class="tl-line tl-line-grey"></div>
+        <div class="tl-item tl-pending">
+          <div class="tl-dot tl-grey"></div>
+          <div class="tl-body">
+            <div class="tl-title">Approval Decision</div>
+            <div class="tl-sub">You'll receive a notification once approved</div>
+          </div>
+        </div>
+        <div class="tl-line tl-line-grey"></div>
+        <div class="tl-item tl-pending">
+          <div class="tl-dot tl-grey"></div>
+          <div class="tl-body">
+            <div class="tl-title">Access Granted</div>
+            <div class="tl-sub">Login and start exploring ANVAY</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Once approved, use your registered email and password to sign in.
+      </div>
+
+      <button class="btn-login" (click)="goLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Go to Login
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,555 @@
+<div class="leader-shell" [class.sidebar-collapsed]="!sidebarOpen">
+  <!-- SIDEBAR -->
+  <aside class="leader-sidebar">
+    <div class="sb-brand">
+      <div><div class="brand-name">ANVAY</div><div class="brand-tag">DISCOVER. JOIN. HOST.</div></div>
+    </div>
+    <div class="sb-role-badge"><span class="role-dot"></span>Club Leader</div>
+    <nav class="sb-nav">
+      <button class="nav-item" [class.active]="activeView==='dashboard'" (click)="setView('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
+      </button>
+      <button class="nav-item" [class.active]="activeView==='events'" (click)="setView('events')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Event Feed
+      </button>
+      <button class="nav-item" [class.active]="activeView==='clubs'" (click)="setView('clubs')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>Clubs
+      </button>
+      <button class="nav-item" [class.active]="activeView==='leaderboard'" (click)="setView('leaderboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Leaderboard
+      </button>
+      <button class="nav-item" [class.active]="activeView==='profile'" (click)="setView('profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile
+      </button>
+
+      <div class="nav-divider"><span>My Club</span></div>
+
+      <button class="nav-item" [class.active]="activeView==='requests'" (click)="setView('requests')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Join Requests
+        <span class="req-badge" *ngIf="joinRequests.length > 0">{{joinRequests.length}}</span>
+      </button>
+      <button class="nav-item" [class.active]="activeView==='members'" (click)="setView('members')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Members
+      </button>
+    </nav>
+    <div class="sb-club-info" *ngIf="managedClub">
+      <div class="sb-club-name">🏛️ {{managedClub.clubName}}</div>
+      <div class="sb-club-cat">{{managedClub.category}}</div>
+    </div>
+    <button class="sb-logout" (click)="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="leader-main">
+    <header class="leader-topbar">
+      <button class="toggle-btn" (click)="sidebarOpen=!sidebarOpen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="topbar-logo">Anvay</span>
+      <span class="role-chip">Club Leader</span>
+      <div class="topbar-right">
+        <div class="notif-wrap">
+          <button class="bell-btn" (click)="toggleNotifications()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="bell-dot" *ngIf="totalNotifCount > 0"></span>
+          </button>
+          <div class="notif-dropdown" *ngIf="showNotifDropdown">
+            <div class="notif-header">
+              <span class="notif-title">Notifications</span>
+              <span class="notif-count" *ngIf="totalNotifCount > 0">{{totalNotifCount}}</span>
+            </div>
+            <div class="notif-list">
+              <div *ngFor="let n of notifications"
+                class="notif-item" [class.notif-clickable]="n.link"
+                [class.notif-warn]="n.type==='warn'" [class.notif-info]="n.type==='info'" [class.notif-success]="n.type==='success'"
+                (click)="navigateFromNotif(n.link)">
+                <span class="notif-dot"></span>
+                <span class="notif-text">{{n.text}}</span>
+                <svg *ngIf="n.link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="notif-backdrop" *ngIf="showNotifDropdown" (click)="showNotifDropdown=false"></div>
+        </div>
+        <!-- Profile dropdown -->
+        <div class="profile-wrap">
+          <div class="user-chip" (click)="toggleProfileMenu()">
+            <div class="user-avatar" *ngIf="!profilePicture">{{leaderName.charAt(0)}}</div>
+            <img *ngIf="profilePicture" [src]="profilePicture" class="user-avatar-img" alt="profile">
+            <span>{{leaderName}}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="profile-menu" *ngIf="showProfileMenu">
+            <div class="pm-header">
+              <div class="pm-avatar" *ngIf="!profilePicture">{{leaderName.charAt(0)}}</div>
+              <img *ngIf="profilePicture" [src]="profilePicture" class="pm-avatar-img" alt="profile">
+              <div>
+                <div class="pm-name">{{leaderName}}</div>
+                <div class="pm-role">Club Leader</div>
+              </div>
+            </div>
+            <div class="pm-info">
+              <div class="pm-info-row"><span class="pm-label">Institution</span><span class="pm-val">{{dashboard?.institutionName || '–'}}</span></div>
+              <div class="pm-info-row" *ngIf="managedClub"><span class="pm-label">Club</span><span class="pm-val">{{managedClub.clubName}}</span></div>
+            </div>
+            <div class="pm-divider"></div>
+            <button class="pm-item" (click)="setView('profile'); showProfileMenu=false">My Profile</button>
+            <button class="pm-item pm-logout" (click)="logout()">Sign Out</button>
+          </div>
+          <div class="notif-backdrop" *ngIf="showProfileMenu" (click)="showProfileMenu=false"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="msg-bar success" *ngIf="message && messageType==='success'">&#10003; {{message}}</div>
+    <div class="msg-bar error" *ngIf="message && messageType==='error'">&#10005; {{message}}</div>
+
+    <main class="leader-content">
+
+      <!-- DASHBOARD -->
+      <div *ngIf="activeView==='dashboard'">
+        <div class="page-header">
+          <h1>Welcome back, {{dashboard?.firstName || leaderName}}</h1>
+          <p>{{dashboard?.institutionName}} &middot; Track your progress and manage your club</p>
+        </div>
+        <div *ngIf="dashLoading" class="loading-state"><div class="spinner"></div></div>
+        <ng-container *ngIf="!dashLoading && dashboard">
+          <div class="stat-grid">
+            <div class="stat-card sc-amber">
+              <div class="stat-icon si-amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="stat-body"><div class="stat-num">{{dashboard.totalPoints}}</div><div class="stat-label">Total Points</div></div>
+            </div>
+            <div class="stat-card sc-teal">
+              <div class="stat-icon si-teal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="stat-body"><div class="stat-num">#{{myRankInInstitution || dashboard.rank || '–'}}</div><div class="stat-label">Rank</div></div>
+            </div>
+            <div class="stat-card sc-green">
+              <div class="stat-icon si-green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="stat-body"><div class="stat-num">{{dashboard.registeredEventsCount}}</div><div class="stat-label">Events Joined</div></div>
+            </div>
+            <div class="stat-card sc-purple">
+              <div class="stat-icon si-purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+              <div class="stat-body"><div class="stat-num">{{dashboard.joinedClubsCount}}</div><div class="stat-label">Clubs Joined</div></div>
+            </div>
+          </div>
+
+          <div class="dash-row">
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3>Upcoming Events</h3>
+                <button class="link-btn" (click)="setView('events')">View All &rarr;</button>
+              </div>
+              <div class="event-list">
+                <div class="event-item" *ngFor="let ev of dashboard.upcomingEvents">
+                  <div class="event-type-dot"></div>
+                  <div class="event-info">
+                    <div class="event-title">{{ev.title}}</div>
+                    <div class="event-meta">{{ev.institution}} &middot; {{ev.dateTime | date:'mediumDate'}}</div>
+                  </div>
+                  <span class="tag">{{ev.type}}</span>
+                </div>
+                <div *ngIf="!dashboard.upcomingEvents?.length" class="empty-state-sm">No upcoming events</div>
+              </div>
+            </div>
+            <div class="dash-card">
+              <div class="dash-card-header">
+                <h3>My Club</h3>
+                <button class="link-btn" (click)="setView('requests')">Manage &rarr;</button>
+              </div>
+              <div class="club-dash-info" *ngIf="managedClub">
+                <div class="club-dash-icon">🏛️</div>
+                <div class="club-dash-name">{{managedClub.clubName}}</div>
+                <div class="club-dash-cat">{{managedClub.category}}</div>
+                <div class="club-dash-counts">
+                  <span class="cdc-item" (click)="setView('requests')">
+                    <strong>{{joinRequests.length}}</strong> pending requests
+                  </span>
+                  <span class="cdc-item" (click)="setView('members')">
+                    <strong>{{members.length}}</strong> members
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="!managedClub" class="empty-state-sm">No club assigned</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- EVENTS -->
+      <div *ngIf="activeView==='events'">
+        <div class="page-header"><h1>Events</h1><p>Discover events and track your registrations</p></div>
+        <div class="ev-tabs">
+          <button class="ev-tab" [class.active]="eventTab==='feed'" (click)="switchEventTab('feed')">Event Feed</button>
+          <button class="ev-tab" [class.active]="eventTab==='registered'" (click)="switchEventTab('registered')">My Registrations</button>
+        </div>
+
+        <ng-container *ngIf="eventTab==='feed'">
+
+          <!-- Featured Events Carousel -->
+          <div class="carousel-section" *ngIf="featuredEvents.length > 0 && !eventsLoading">
+            <div class="carousel-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Featured Events
+            </div>
+            <div class="carousel-wrapper">
+              <button class="carousel-btn carousel-prev" (click)="prevCarousel()">&#8249;</button>
+              <div class="carousel-track-outer">
+                <div class="carousel-track" [style.transform]="'translateX(calc(-' + carouselIndex + ' * (25% + 3px)))'">
+                  <div class="carousel-card" *ngFor="let ev of featuredEvents"
+                    (mouseenter)="hoveredCarouselEvent=ev" (mouseleave)="hoveredCarouselEvent=null">
+                    <img *ngIf="ev.imageData" [src]="ev.imageData" class="carousel-img" alt="event">
+                    <div *ngIf="!ev.imageData" class="carousel-placeholder">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="3" y="4" width="18" height="18" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                      <span>{{ev.title}}</span>
+                    </div>
+                    <div class="carousel-popup" *ngIf="hoveredCarouselEvent?.eventId===ev.eventId">
+                      <div class="cp-type">{{ev.type || 'Event'}}</div>
+                      <div class="cp-title">{{ev.title}}</div>
+                      <div class="cp-meta">{{ev.institution}}</div>
+                      <div class="cp-date" *ngIf="ev.startDate">{{ev.startDate | date:'mediumDate'}}</div>
+                      <div class="cp-cap">{{ev.registeredCount || 0}} / {{ev.totalCapacity || '–'}} registered</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-btn carousel-next" (click)="nextCarousel()">&#8250;</button>
+            </div>
+            <div class="carousel-dots">
+              <span *ngFor="let ev of featuredEvents; let i=index" class="carousel-dot" [class.carousel-dot-active]="i===carouselIndex" (click)="carouselIndex=i"></span>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="filters-bar">
+            <div class="search-wrap">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input [(ngModel)]="searchEvent" (ngModelChange)="onSearchInput()" placeholder="Search events..." (blur)="showSuggestions=false">
+              </div>
+              <div class="suggestions-dropdown" *ngIf="showSuggestions">
+                <div class="suggestion-item" *ngFor="let s of searchSuggestions" (mousedown)="selectSuggestion(s)">{{s}}</div>
+              </div>
+            </div>
+            <select class="filter-select" [(ngModel)]="filterCategory">
+              <option value="">All Categories</option>
+              <option *ngFor="let c of availableCategories" [value]="c">{{c}}</option>
+            </select>
+            <div class="filter-date-group">
+              <label class="filter-date-label">From</label>
+              <input type="date" class="filter-date" [(ngModel)]="filterDateFrom">
+              <label class="filter-date-label">To</label>
+              <input type="date" class="filter-date" [(ngModel)]="filterDateTo">
+            </div>
+            <button class="btn-clear-filters" (click)="clearFilters()" *ngIf="filterCategory || filterDateFrom || filterDateTo || searchEvent">&#10005; Clear</button>
+          </div>
+          <div *ngIf="eventsLoading" class="loading-state"><div class="spinner"></div></div>
+          <ng-container *ngIf="!eventsLoading">
+            <div class="ev-section" *ngIf="upcomingEvents.length > 0">
+              <div class="ev-section-header"><span class="ev-section-dot upcoming-dot"></span><h3 class="ev-section-title">Upcoming</h3><span class="ev-section-count">{{upcomingEvents.length}}</span></div>
+              <div class="events-grid"><div class="event-card" *ngFor="let ev of upcomingEvents"><ng-container *ngTemplateOutlet="evCardTpl; context:{ev:ev}"></ng-container></div></div>
+            </div>
+            <div class="ev-section" *ngIf="currentEvents.length > 0">
+              <div class="ev-section-header"><span class="ev-section-dot current-dot"></span><h3 class="ev-section-title">Happening Now</h3><span class="ev-section-count">{{currentEvents.length}}</span></div>
+              <div class="events-grid"><div class="event-card" *ngFor="let ev of currentEvents"><ng-container *ngTemplateOutlet="evCardTpl; context:{ev:ev}"></ng-container></div></div>
+            </div>
+            <div class="ev-section" *ngIf="pastEvents.length > 0">
+              <div class="ev-section-header"><span class="ev-section-dot past-dot"></span><h3 class="ev-section-title">Past Events</h3><span class="ev-section-count">{{pastEvents.length}}</span></div>
+              <div class="events-grid"><div class="event-card past-card" *ngFor="let ev of pastEvents"><ng-container *ngTemplateOutlet="evCardTpl; context:{ev:ev}"></ng-container></div></div>
+            </div>
+            <div *ngIf="upcomingEvents.length===0 && currentEvents.length===0 && pastEvents.length===0" class="empty-state">No events available</div>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="eventTab==='registered'">
+          <div *ngIf="myRegistrationsLoading" class="loading-state"><div class="spinner"></div></div>
+          <div *ngIf="!myRegistrationsLoading && myRegistrations.length===0" class="empty-state">No registered events yet</div>
+          <div class="events-grid" *ngIf="!myRegistrationsLoading && myRegistrations.length > 0">
+            <div class="event-card" [class.past-card]="!isEventOpen(ev)" *ngFor="let ev of myRegistrations">
+              <div class="ec-header"><span class="tag">{{ev.type||'Event'}}</span><span class="badge-registered">&#10003; Registered</span></div>
+              <h4 class="ec-title">{{ev.title}}</h4>
+              <div class="ec-meta"><span>{{ev.institution||'General'}}</span></div>
+              <div *ngIf="ev.startDate" style="font-size:.78rem;color:#64748b">{{ev.startDate | date:'mediumDate'}}</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- CLUBS -->
+      <div *ngIf="activeView==='clubs'">
+        <div class="page-header"><h1>Clubs</h1><p>Browse and join clubs at your institution</p></div>
+        <div *ngIf="clubsLoading" class="loading-state"><div class="spinner"></div></div>
+        <div class="clubs-grid" *ngIf="!clubsLoading">
+          <div class="club-card" *ngFor="let cl of allClubs">
+            <div class="club-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <h4 class="club-name">{{cl.clubName}}</h4>
+            <span class="tag">{{cl.type || cl.category}}</span>
+            <div class="club-members">{{cl.membersCount || cl.memberCount || 0}} members</div>
+            <div class="club-actions">
+              <button class="btn-join" *ngIf="!isApproved(cl.clubId) && !isPending(cl.clubId)" (click)="joinClub(cl.clubId)">Join Club</button>
+              <button class="btn-pending" *ngIf="isPending(cl.clubId)" disabled>&#9203; Pending</button>
+              <button class="btn-joined" *ngIf="isApproved(cl.clubId)" disabled>&#10003; Joined</button>
+              <button class="btn-lead" *ngIf="isApproved(cl.clubId) && !hasAppliedLeadership(cl.clubId)" (click)="openLeadershipModal(cl.clubId, cl.clubName)">Apply Leadership</button>
+              <button class="btn-lead-applied" *ngIf="hasAppliedLeadership(cl.clubId)" disabled>&#128081; Applied</button>
+            </div>
+          </div>
+          <div *ngIf="allClubs.length===0" class="empty-state">No clubs available</div>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD -->
+      <div *ngIf="activeView==='leaderboard'">
+        <div class="page-header"><h1>Leaderboard</h1><p>Rankings across students and institutions</p></div>
+        <div class="lb-tabs">
+          <button class="lb-tab" [class.active]="lbTab==='institution'" (click)="switchLbTab('institution')">My Institution</button>
+          <button class="lb-tab" [class.active]="lbTab==='global'" (click)="switchLbTab('global')">All Students</button>
+          <button class="lb-tab" [class.active]="lbTab==='colleges'" (click)="switchLbTab('colleges')">🏫 College Rankings</button>
+        </div>
+
+        <div *ngIf="lbTab==='institution'">
+          <div *ngIf="lbLoading" class="loading-state"><div class="spinner"></div></div>
+          <div *ngIf="!lbLoading" class="data-card">
+            <table class="data-table">
+              <thead><tr><th>Rank</th><th>Student</th><th>Email</th><th>Points</th><th>Clubs</th><th>Events</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let u of leaderboard; let i=index" [class.my-row]="u.userId===studentId">
+                  <td><span class="rank-badge">{{getRankLabel(i)}}</span></td>
+                  <td>
+                    <div class="student-cell">
+                      <div class="student-avatar">{{u.firstName?.charAt(0)||'?'}}</div>
+                      <div class="cell-primary">{{u.firstName}} {{u.lastName}}<span *ngIf="u.userId===studentId" class="you-badge"> (You)</span></div>
+                    </div>
+                  </td>
+                  <td>{{u.email}}</td>
+                  <td><strong class="points-highlight">{{u.totalPoints || 0}}</strong></td>
+                  <td>{{u.joinedClubsCount || 0}}</td>
+                  <td>{{u.registeredEventsCount || 0}}</td>
+                </tr>
+                <tr *ngIf="leaderboard.length===0"><td colspan="6" class="empty-cell">No data available</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div *ngIf="lbTab==='global'">
+          <div *ngIf="globalLbLoading" class="loading-state"><div class="spinner"></div></div>
+          <div *ngIf="!globalLbLoading" class="data-card">
+            <table class="data-table">
+              <thead><tr><th>Rank</th><th>Student</th><th>Email</th><th>Points</th><th>Clubs</th><th>Events</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let u of globalLeaderboard; let i=index" [class.my-row]="u.userId===studentId">
+                  <td><span class="rank-badge">{{getRankLabel(i)}}</span></td>
+                  <td>
+                    <div class="student-cell">
+                      <div class="student-avatar">{{u.firstName?.charAt(0)||'?'}}</div>
+                      <div class="cell-primary">{{u.firstName}} {{u.lastName}}<span *ngIf="u.userId===studentId" class="you-badge"> (You)</span></div>
+                    </div>
+                  </td>
+                  <td>{{u.email}}</td>
+                  <td><strong class="points-highlight">{{u.totalPoints || 0}}</strong></td>
+                  <td>{{u.joinedClubsCount || 0}}</td>
+                  <td>{{u.registeredEventsCount || 0}}</td>
+                </tr>
+                <tr *ngIf="globalLeaderboard.length===0"><td colspan="6" class="empty-cell">No data available</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div *ngIf="lbTab==='colleges'">
+          <div *ngIf="collegeLbLoading" class="loading-state"><div class="spinner"></div></div>
+          <div *ngIf="!collegeLbLoading" class="data-card">
+            <table class="data-table">
+              <thead><tr><th>Rank</th><th>Institution</th><th>Total Points</th><th>Students</th><th>Events</th></tr></thead>
+              <tbody>
+                <tr *ngFor="let c of collegeLb; let i=index" [class.my-row]="c.institutionId===institutionId">
+                  <td><span class="rank-badge">{{i===0?'🥇':i===1?'🥈':i===2?'🥉':getRankLabel(i)}}</span></td>
+                  <td>
+                    <div class="student-cell">
+                      <div class="student-avatar">🏫</div>
+                      <div class="cell-primary">{{c.institutionName}}<span *ngIf="c.institutionId===institutionId" class="you-badge"> (Your College)</span></div>
+                    </div>
+                  </td>
+                  <td><strong class="points-highlight">{{c.totalPoints || 0}}</strong></td>
+                  <td>{{c.studentCount || 0}}</td>
+                  <td>{{c.eventCount || 0}}</td>
+                </tr>
+                <tr *ngIf="collegeLb.length===0"><td colspan="5" class="empty-cell">No data available</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div *ngIf="activeView==='profile'">
+        <div class="page-header"><h1>My Profile</h1><p>View your account details and achievements</p></div>
+        <div *ngIf="profileLoading" class="loading-state"><div class="spinner"></div></div>
+        <div *ngIf="!profileLoading && profile" class="profile-layout">
+          <div class="profile-card">
+            <div class="profile-pic-wrap">
+              <div class="profile-avatar" *ngIf="!profilePicture">{{profile.firstName?.charAt(0)||'L'}}</div>
+              <img *ngIf="profilePicture" [src]="profilePicture" class="profile-avatar-img" alt="profile">
+              <div class="profile-pic-actions">
+                <label class="btn-pic-upload" for="leaderPicInput">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  {{profilePicture ? 'Change' : 'Upload Photo'}}
+                </label>
+                <input id="leaderPicInput" type="file" accept="image/*" class="file-input-hidden" (change)="onProfilePicSelected($event)">
+                <button class="btn-pic-remove" *ngIf="profilePicture" (click)="removeProfilePic()">Remove</button>
+              </div>
+            </div>
+            <div class="profile-name">{{profile.firstName}} {{profile.lastName}}</div>
+            <div class="profile-email">{{profile.email}}</div>
+            <div class="profile-role">Club Leader</div>
+            <div class="profile-stats">
+              <div class="ps-item"><div class="ps-num">{{profile.totalPoints||0}}</div><div class="ps-lbl">Points</div></div>
+              <div class="ps-item"><div class="ps-num">#{{profileRank}}</div><div class="ps-lbl">Rank</div></div>
+              <div class="ps-item"><div class="ps-num">{{profile.registeredEventsCount||0}}</div><div class="ps-lbl">Events</div></div>
+              <div class="ps-item"><div class="ps-num">{{profile.joinedClubsCount||0}}</div><div class="ps-lbl">Clubs</div></div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!profileLoading && !profile" class="empty-state">Profile not found</div>
+      </div>
+
+      <!-- JOIN REQUESTS -->
+      <div *ngIf="activeView==='requests'">
+        <div class="page-header"><h1>Join Requests</h1><p>Review and approve membership requests for {{managedClub?.clubName || 'your club'}}</p></div>
+        <div *ngIf="requestsLoading" class="loading-state"><div class="spinner"></div></div>
+        <div *ngIf="!requestsLoading && joinRequests.length === 0" class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div class="empty-text">No pending join requests</div>
+        </div>
+        <div *ngIf="!requestsLoading && joinRequests.length > 0" class="data-card">
+          <table class="data-table">
+            <thead><tr><th>Student</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let r of joinRequests">
+                <td>
+                  <div class="student-cell">
+                    <div class="student-avatar">{{r.user?.firstName?.charAt(0)||'?'}}</div>
+                    <div class="cell-primary">{{r.user?.firstName}} {{r.user?.lastName}}</div>
+                  </div>
+                </td>
+                <td>{{r.user?.email}}</td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-sm btn-approve" (click)="approveRequest(r.id)">&#10003; Approve</button>
+                    <button class="btn-sm btn-del" (click)="rejectRequest(r.id)">&#10005; Reject</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div *ngIf="activeView==='members'">
+        <div class="page-header"><h1>Club Members</h1><p>Manage approved members of {{managedClub?.clubName || 'your club'}}</p></div>
+        <div *ngIf="membersLoading" class="loading-state"><div class="spinner"></div></div>
+        <div *ngIf="!membersLoading && members.length === 0" class="empty-state">
+          <div class="empty-icon">👥</div>
+          <div class="empty-text">No approved members yet</div>
+        </div>
+        <div *ngIf="!membersLoading && members.length > 0" class="data-card">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Student</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr *ngFor="let m of members; let i=index">
+                <td>{{i+1}}</td>
+                <td>
+                  <div class="student-cell">
+                    <div class="student-avatar">{{m.user?.firstName?.charAt(0)||'?'}}</div>
+                    <div class="cell-primary">{{m.user?.firstName}} {{m.user?.lastName}}</div>
+                  </div>
+                </td>
+                <td>{{m.user?.email}}</td>
+                <td>
+                  <button class="btn-sm btn-del" (click)="removeMember(m.id)">Remove</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- EVENT CARD TEMPLATE -->
+<ng-template #evCardTpl let-ev="ev">
+  <div class="ec-img" *ngIf="ev.imageData"><img [src]="ev.imageData" alt="event banner"></div>
+  <div class="ec-header">
+    <span class="tag">{{ev.type || 'Event'}}</span>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span *ngIf="ev.participantType==='all' && ev.institutionId !== institutionId" class="badge-public-ev">Public</span>
+      <span *ngIf="ev.status==='ended'" class="badge-ended">Ended</span>
+      <span *ngIf="ev.isRegistered" class="badge-registered">Registered</span>
+      <button class="wishlist-btn" (click)="toggleWishlist(ev.eventId)" [class.wishlisted]="isWishlisted(ev.eventId)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"
+          [style.fill]="isWishlisted(ev.eventId) ? '#ef4444' : 'none'"
+          [style.stroke]="isWishlisted(ev.eventId) ? '#ef4444' : 'currentColor'">
+          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <h4 class="ec-title">{{ev.title}}</h4>
+  <div class="ec-meta">
+    <span>{{ev.institution || 'General'}}</span>
+    <span *ngIf="ev.location">📍 {{ev.location}}</span>
+  </div>
+  <div *ngIf="ev.startDate" class="ec-dates">{{ev.startDate | date:'mediumDate'}}<span *ngIf="ev.endDate"> – {{ev.endDate | date:'mediumDate'}}</span></div>
+  <div class="ec-capacity">
+    <div class="cap-bar"><div class="cap-fill" [style.width.%]="getCapacityPct(ev.registeredCount, ev.totalCapacity)"></div></div>
+    <span class="cap-text">{{ev.registeredCount || 0}} / {{ev.totalCapacity || '–'}} registered</span>
+  </div>
+  <div class="ec-deadline" *ngIf="ev.registrationDeadline && isEventOpen(ev)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11" height="11"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Deadline: {{ev.registrationDeadline | date:'MMM d, h:mm a'}}
+  </div>
+  <button class="btn-register" *ngIf="!ev.isRegistered && isEventOpen(ev)" (click)="registerEvent(ev.eventId)">Register Now</button>
+  <button class="btn-registered" *ngIf="ev.isRegistered" disabled>&#10003; Registered</button>
+  <button class="btn-ended" *ngIf="!ev.isRegistered && ev.status==='ended'" disabled>Event Ended</button>
+  <button class="btn-ended" *ngIf="!ev.isRegistered && !isEventOpen(ev) && ev.status!=='ended'" disabled>
+    {{isDeadlinePassed(ev) ? 'Deadline Passed' : 'Registration Closed'}}
+  </button>
+</ng-template>
+
+<!-- LEADERSHIP MODAL -->
+<div class="modal-overlay" *ngIf="showLeadershipModal" (click)="showLeadershipModal=false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Apply for Leadership</h3>
+      <button class="modal-close" (click)="showLeadershipModal=false">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-club-name">&#128081; {{leadershipClubName}}</p>
+      <label class="form-label">Describe your experience & why you'd make a great leader:</label>
+      <textarea class="form-textarea" [(ngModel)]="leadershipExperience" rows="5" placeholder="Share your relevant experience, skills, and motivation..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="showLeadershipModal=false">Cancel</button>
+      <button class="btn-submit-modal" (click)="submitLeadership()" [disabled]="leadershipLoading || !leadershipExperience.trim()">
+        {{leadershipLoading ? 'Submitting...' : 'Submit Application'}}
+      </button>
+    </div>
+  </div>
+</div>

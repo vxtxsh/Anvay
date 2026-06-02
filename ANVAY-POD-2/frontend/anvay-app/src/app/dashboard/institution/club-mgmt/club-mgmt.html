@@ -1,0 +1,92 @@
+<div class="mgmt-page">
+  <header class="mgmt-header">
+    <div class="header-left">
+      <h1 class="brand-title">Club Management</h1>
+      <p class="brand-subtitle">Create and manage clubs at your institution</p>
+    </div>
+    <button class="btn-create" (click)="onCreateClub()">+ Create Club</button>
+  </header>
+
+  <section class="content-card">
+    <h2 class="section-heading">Your Clubs</h2>
+    
+    <table class="anvay-table">
+      <thead>
+        <tr>
+          <th>Club Name</th>
+          <th>Type</th>
+          <th>Members</th>
+          <th>Join Requests</th>
+          <th>Leadership Apps</th>
+          <th>Created Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let club of clubs">
+          <td class="bold-text">{{ club.clubName }}</td>
+          <td><span class="badge-outline">{{ club.type }}</span></td>
+          <td>
+            <i class="icon-user"></i> {{ club.membersCount }}
+          </td>
+          
+          <td>
+            <span class="text-muted" *ngIf="club.joinRequestsCount === 0">None</span>
+            <span class="text-alert" *ngIf="club.joinRequestsCount > 0">
+              {{ club.joinRequestsCount }} New
+            </span>
+          </td>
+
+          <td>
+            <span class="text-muted" *ngIf="club.leadershipAppsCount === 0">None</span>
+            <span class="badge-purple" *ngIf="club.leadershipAppsCount > 0">
+              {{ club.leadershipAppsCount }} pending
+            </span>
+          </td>
+
+          <td class="text-muted">{{ club.createdDate | date:'M/d/yyyy' }}</td>
+          
+          <td class="action-cell">
+            <button class="btn-action-outline" (click)="onEdit(club.clubId)">
+              Edit
+            </button>
+            <button class="btn-action-outline" (click)="onViewMembers(club.clubId)">
+              Members
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="clubs.length === 0" class="empty-state-placeholder">
+      <p>No clubs currently registered.</p>
+    </div>
+  </section>
+
+  <section class="content-card mt-5" *ngIf="pendingApps.length > 0">
+    <h2 class="section-heading">Pending Leadership Applications</h2>
+    
+    <div class="app-card" *ngFor="let app of pendingApps">
+      <div class="app-card-left">
+        <div class="user-avatar-placeholder"></div>
+        <div class="user-info">
+          <span class="user-name">{{ app.userName }}</span>
+          <span class="user-club-sub">{{ app.clubName }}</span>
+          </div>
+      </div>
+      
+      <div class="app-card-actions">
+        <button class="btn-approve" (click)="onApprove(app.applicationId)">
+          <i class="icon-check"></i> Approve
+        </button>
+        <button class="btn-reject" (click)="onReject(app.applicationId)">
+          <i class="icon-close"></i> Reject
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="empty-state-info" *ngIf="pendingApps.length === 0">
+    <p>Searching database... No pending leadership applications currently active.</p>
+  </div>
+</div>

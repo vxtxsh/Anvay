@@ -1,0 +1,79 @@
+<div class="feed-container">
+  <div class="feed-header">
+    <h2>Event Discovery</h2>
+    <span class="count-badge">{{ events.length }} Events Found</span>
+  </div>
+
+  <div class="event-grid">
+    <div class="event-card" *ngFor="let event of events">
+  <div class="event-body">
+    <div class="event-body">
+  <div class="type-tag">{{ event.type }}</div>
+  <h3>{{ event.title }}</h3>
+  
+  <p class="inst">{{ event.location }}</p> 
+  
+  <p class="location-text">
+    <span class="material-icons" style="font-size: 14px;">place</span> {{ event.location }}
+  </p>
+
+  <button 
+  [ngClass]="event.isRegistered ? 'btn-done' : 'btn-register'"
+  [disabled]="event.isRegistered"
+  (click)="openRegistrationModal(event)">
+  
+  <span *ngIf="!event.isRegistered">Register Now</span>
+  
+  <span *ngIf="event.isRegistered" class="flex-center">
+    <i class="material-icons" style="font-size: 16px;">check_circle</i> Registered
+  </span>
+</button>
+</div>
+</div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="header-text">
+          <h3>Confirm Registration</h3>
+          <p>Complete your entry for this event</p>
+        </div>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedEvent">
+        <div class="event-preview-card">
+          <div class="event-info">
+            <span class="type-pill">{{ selectedEvent.type }}</span>
+            <h4>{{ selectedEvent.title }}</h4>
+            <p class="location-text">
+              <span class="material-icons">place</span> {{ selectedEvent.location }}
+            </p>
+          </div>
+        </div>
+
+        <div class="registration-details">
+          <div class="detail-row">
+            <span>Student ID</span>
+            <span class="detail-value">#101 (Auto-detected)</span>
+          </div>
+          <div class="detail-row">
+            <span>Status</span>
+            <span class="detail-value status-tag" [class.confirmed]="selectedEvent.isRegistered">
+              {{ selectedEvent.isRegistered ? 'Confirmed' : 'Pending Confirmation' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn-primary" (click)="confirmRegistration()" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Confirm & Register</span>
+          <span *ngIf="isSubmitting" class="loader"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

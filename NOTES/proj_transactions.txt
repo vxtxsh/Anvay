@@ -1,0 +1,164 @@
+Login authentication/validation
+Dark mode: toggle switches
+Event creation form :
+	input fields, check boxes, dates, drop down, alert, submit button, radio button
+search events
+images & videos->blob
+event update and deletion
+event registration, payment transactions and validation
+Point system
+Notification & popup reminders
+graph and analytics, sliders
+chat bot & api
+
+club creation, member management
+Institution Management, creation, validation, clubs management, abstraction
+
+
+
+Structure
+
+com.anvay.backend
+├── config             // Security, JWT, and Multi-tenancy filters
+├── controller         // Authentication, SuperAdmin, Club, and Event APIs
+├── dto                // Request/Response payloads for our endpoints
+├── exception          // Global error handling
+├── model              // JPA Entities (Tenants, Users, Clubs, Events, etc.)
+├── repository         // Data access layers for each entity
+├── service            // Business logic (e.g., points allocation, payment verification)
+└── util               // Shared helpers (JWT utils, constants)
+
+
+
+
+dashboard impl instead of event 
+merge mathi+mithun+vitesh
+dashboard front end fix
+Angular setup
+
+
+
+
+
+You’ve successfully transitioned your Anvay event management application from a local setup to a managed cloud environment. Here is a summary of the technical milestones you achieved:
+1. Cloud Infrastructure Provisioning
+Aiven Service Setup: You navigated the Aiven console to provision a managed MySQL 8 instance.
+Regional Selection: You strategically chose the Bangalore (DigitalOcean) region to ensure low latency for your application, as you are developing from India.
+Service Correction: You initially provisioned an Apache Kafka instance but quickly identified and corrected it to a MySQL database to match your Spring Data JPA requirements.
+2. Database Security Configuration
+SSL Implementation: You identified that Aiven requires encrypted connections (ssl-mode=REQUIRED).
+Certificate Management: You downloaded the CA Certificate (ca.pem) and placed it in your project's root directory to allow your Java environment to establish a trusted handshake with the cloud server.
+3. Spring Boot Integration
+Data Source Mapping: You updated your application.properties with the cloud-specific Service URI, host (anvay-swastikatinkhede-7df7.l.aivencloud.com), and port (12534).
+Driver Configuration: You configured the JDBC URL to include the SSL path, ensuring your Spring Boot backend can securely talk to the persistence layer.
+Hibernate Dialect: You ensured the application is using MySQL8Dialect to correctly translate your Java @Entity classes into cloud-hosted SQL tables.
+4. Architecture Evolution
+Local to Cloud: By moving your MySQL instance to Aiven, you’ve shifted from a "Localhost" dependency to a Multi-Tier Cloud Architecture. Your Spring Boot API is now ready to be deployed to a hosting service while maintaining a persistent, high-availability database in the background.
+What's the next goal for Anvay—are you looking to deploy the Spring Boot API to the cloud as well, or are you moving back to frontend development in Angular?
+
+
+
+
+STEPS TO DEPLOY IN CODESPACE
+ 
+Phase 1: Launch Your Cloud Machine
+Go to your repository page on GitHub.
+Click the green Code button.
+Switch to the Codespaces tab.
+Click Create codespace on main (or your working branch).
+Wait for the VS Code editor to fully load in your browser.
+Phase 2: Configure the Environment (Java & Maven)
+Open a terminal (`Ctrl + ``) and run these commands to set up Java 21 and fix Maven permissions.
+Install Java 21:
+Bash
+ 
+Plain Text
+sdk install java 21.0.2-ms
+sdk default java 21.0.2-ms
+
+
+Make Maven executable:
+Bash
+ 
+Plain Text
+   cd anvay/anvay  # Navigate to your backend folder   chmod +x mvnw
+
+
+Phase 3: Spin Up the Database
+Codespaces come with MySQL, but it is asleep and locked down by default. Let's wake it up and secure it.
+Start the MySQL Service:
+Bash
+ 
+Plain Text
+	
+   sudo apt-get update && sudo apt-get install mysql-server -y
+   sudo service mysql start
+
+
+Bypass the Linux Security Lock & Set Password:
+Bash
+ 
+Plain Text
+sudo mysql -u root
+
+
+(Inside the mysql> prompt, run these exactly):
+SQL
+ 
+Plain Text
+   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+   FLUSH PRIVILEGES;
+   exit;
+
+
+Create the ANVAY Database:
+Bash
+ 
+Plain Text
+   mysql -u root -proot -e "CREATE DATABASE IF NOT EXISTS anvay;"
+
+
+Phase 4: Configure and Run the Backend
+Open your src/main/resources/application.properties file and ensure your database credentials look exactly like this:
+Properties
+ 
+Plain Text
+   spring.datasource.url=jdbc:mysql://localhost:3306/anvayspring.datasource.username=rootspring.datasource.password=root
+(Make sure you save the file!)2. Run Spring Boot:
+Bash
+ 
+Plain Text
+   ./mvnw clean spring-boot:run
+(Leave this terminal tab running. Do not close it.)
+Phase 5: Configure and Run the Frontend
+Open a second terminal tab (click the + icon in the terminal panel).
+Navigate to your frontend folder:
+Bash
+ 
+Plain Text
+   cd frontend/anvay-app
+
+
+Open your package.json file and edit the "start" script to bypass the cloud router by adding --host 0.0.0.0. It should look like this:
+JSON
+ 
+Plain Text
+   "scripts": {
+     "start": "ng serve --host 0.0.0.0 --proxy-config proxy.conf.json"   }
+(Make sure you save the file!)4. Install dependencies and run the frontend:
+Bash
+ 
+Plain Text
+   npm install
+   npm start
+(Leave this terminal tab running too.)
+Phase 6: Smash the Security Walls (Port Forwarding)
+Because Codespaces is a private environment, you must tell GitHub to allow web traffic to your app.
+Look at the bottom panel of VS Code and click the Ports tab.
+You will see both your backend port (8081) and frontend port (4200) listed.
+Right-click the word Private under the "Visibility" column for BOTH ports and change them to Public.
+If 8081 stays private, your login buttons will fail.
+If 4200 stays private, you can't share the link.
+Hover over the "Forwarded Address" for port 4200 and click the Globe Icon to open your live application in a new browser tab!
+For Next Time: .devcontainer
+To avoid doing Phase 1 and Phase 2 every single time, use the VS Code Command Palette (Ctrl + Shift + P or Cmd + Shift + P), type Codespaces: Add Dev Container Configuration Files, and select a Java setup. Commit the generated folder to your repository, and GitHub will automate the environment setup for you on all future builds!

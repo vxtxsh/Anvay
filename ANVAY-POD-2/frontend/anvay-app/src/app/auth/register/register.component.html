@@ -1,0 +1,65 @@
+<div class="reg-shell">
+  <div class="reg-left">
+    <div class="brand-area">
+      <span class="brand-name">ANVAY</span>
+      <span class="brand-tagline">DISCOVER. JOIN. HOST.</span>
+    </div>
+    <div class="left-copy">
+      <h2>Join the<br>ANVAY Network</h2>
+      <p>Connect your institution or yourself to a platform built for campus engagement.</p>
+    </div>
+    <div class="steps">
+      <div class="step active"><div class="step-dot">1</div><span>Choose your role</span></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">2</div><span>Send request</span></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">3</div><span>Await approval</span></div>
+      <div class="step-line"></div>
+      <div class="step"><div class="step-dot">4</div><span>Login & explore</span></div>
+    </div>
+  </div>
+
+  <div class="reg-right">
+    <button class="back-btn" (click)="back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Login
+    </button>
+
+    <div class="reg-header">
+      <h1>Create Account</h1>
+      <p>Select how you'd like to join ANVAY</p>
+    </div>
+
+    <div class="role-cards">
+      <div class="role-card" (click)="go('institution')">
+        <div class="role-icon ri-inst">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+          </svg>
+        </div>
+        <div class="role-body">
+          <div class="role-title">Register as Institution</div>
+          <div class="role-desc">Onboard your college or university. Manage events, clubs, and students on ANVAY.</div>
+          <div class="role-badge">Super Admin Approval Required</div>
+        </div>
+        <svg class="role-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <div class="role-card" (click)="go('student')">
+        <div class="role-icon ri-student">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="32" height="32">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <div class="role-body">
+          <div class="role-title">Register as Student</div>
+          <div class="role-desc">Join your institution on ANVAY. Discover events, join clubs and earn achievements.</div>
+          <div class="role-badge">Institution Admin Approval Required</div>
+        </div>
+        <svg class="role-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <p class="login-hint">Already have an account? <a href="/login">Sign in</a></p>
+  </div>
+</div>

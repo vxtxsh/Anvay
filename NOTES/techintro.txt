@@ -1,0 +1,256 @@
+Project at a glance (everyone should know this much)
+Stack: Angular 21 (standalone components), TypeScript, RxJS, HttpClient, FormsModule
+What it is: Institution Admin portal for M Kumarasamy College of Engineering — manages Events, Clubs, Students, with a Dashboard
+Backend: Spring Boot REST API at http://localhost:8082/api/... (frontend talks to it via services)
+Bootstrap flow: main.ts → app.config.ts (registers router + HttpClient) → app.ts (root component) → app.html (sidebar + <router-outlet>)
+4 routes defined in app.routes.ts: /dashboard, /event-management, /club-management, /students (default redirects to /dashboard)
+Part 1 — MATHI: App Shell, Routing & Sidebar
+Files to own:
+src/main.ts
+src/app/app.ts, app.html, app.css
+src/app/app.config.ts
+src/app/app.routes.ts
+src/app/components/sidebar/sidebar.ts, sidebar.html, sidebar.css
+package.json (dependencies overview)
+What to explain:
+How Angular boots: bootstrapApplication(AppComponent, appConfig) in main.ts
+Why provideRouter(routes) and provideHttpClient() are in app.config.ts — without HttpClient no service works
+The layout pattern: <app-sidebar> (fixed 260px left) + <main> with <router-outlet> — the sidebar stays, only main content swaps on route change
+Sidebar uses routerLink + routerLinkActive="active" to highlight the current page
+The 4 routes in app.routes.ts and the default redirect to /dashboard
+Part 2 — MITHUN: Dashboard (stats + upcoming events)
+Files to own:
+src/app/components/dashboard/dashboard.ts, dashboard.html, dashboard.css
+src/app/services/dashboard.service.ts
+src/app/models/dashboard-stats.ts (the only TypeScript interface in the project)
+What to explain:
+DashboardStats interface — typed contract: totalEvents, totalClubs, totalStudents, totalRegistrations
+ngOnInit() calls fetchDashboardData() which makes 2 parallel HTTP calls via DashboardService
+getStats(instId) → GET /api/dashboard/stats/1 (returns counts for the 4 stat cards)
+getUpcomingEvents(instId) → GET /api/dashboard/events/1, takes top 3 with .slice(0,3)
+calculatePercentage(event) — computes % filled for the progress pill (currentRegistrations ÷ maxParticipants)
+Template: 4 stat cards with {{ stats?.totalEvents }}, *ngFor for events, *ngIf for empty state, | date pipe
+Bug to call out in dashboard.ts line 9: imports: [CommonModule, club-management] — club-management is not a valid identifier, this won't compile. Should just be [CommonModule].
+Part 3 — SWAS: Event Management (full CRUD with modal form)
+Files to own:
+src/app/components/event-management/event-management.ts, event-management.html, event-management.css
+src/app/services/event.service.ts
+What to explain:
+The most complete component — has list, create, delete + a modal form
+FormsModule + template-driven form (#eventForm="ngForm", ngModel, name attributes)
+fetchEvents() → GET /api/events/institution/1 populates the table
+toggleForm() controls the modal via *ngIf="showForm"
+saveEvent(form): maps form fields to backend schema (eventName → title, maxSlots → maxParticipants), wraps institutionId as nested institution: { institutionId: 1 } because the backend expects a relation object, then POST and refresh
+deleteEvent(id) with confirm() dialog → DELETE /api/events/{id}
+Template has a category badge, status pill, *ngFor rows, and [disabled]="eventForm.invalid" to block invalid submits
+Part 4 — VITESH: Club Management (clubs + leadership approvals)
+Files to own:
+src/app/components/club-management/club-management.ts, club-management.html, club-management.css
+src/app/services/club.service.ts
+What to explain:
+Two sections: Pending Leadership Applications (currently hardcoded mock data — Mathi & Ananya) and Active Clubs List (real API data)
+fetchClubs() → GET /api/clubs/1
+addClub() → POST /api/clubs/add/1 with form payload, then refreshes list
+Two-way binding with [(ngModel)] on newClub.clubName, newClub.category, newClub.description (different style from Swas's template-driven approach — good comparison point)
+approve(id) / reject(id) — currently just filter the array locally (no backend call yet — backend integration is a TODO)
+<ng-template #noApps> + *ngIf="...; else noApps" — Angular's structural directive pattern for empty states
+Modal controlled by showModal boolean, opens via openCreateModal()
+Part 5 — LIKHITHA: Student Management
+Files to own:
+src/app/components/student-management/student-management.ts, student-management.html, student-management.css
+src/app/services/student.service.ts
+What to explain:
+Lists students for institution 1 + an Add Student modal
+fetchStudents() → GET /api/students/1
+addStudent() → POST /api/students/add — note the payload includes a default password (password123) and role (STUDENT), wraps institution as { institutionId: 1 }
+searchTerm + get filteredStudents() — a getter-based client-side search filter (case-insensitive .includes() on name)
+Two-way binding [(ngModel)] on every form field, dropdown for department (CSE/IT/ECE/EEE)
+Form reset after save by reassigning the newStudent object
+The HTML template is currently minimal (just the Add button + modal) — the student list table is not rendered yet. Good honest call-out: this part is incomplete and needs a *ngFor table like the others.
+
+
+
+package.json — npm dependencies & scripts
+angular.json — Angular project configuration
+tsconfig.json — TypeScript settings
+main.ts — Application entry point
+app.config.ts — Global app configuration (routing, providers)
+App components & services (the core logic)
+1. package.json
+Purpose: Declares all npm dependencies (libraries) and scripts (commands to run).
+Why it's needed:
+Lists every Angular, TypeScript, and utility library the frontend needs
+Defines commands like npm start, npm build, npm test
+When you clone the repo, npm install reads this file and downloads all dependencies into node_modules/
+2. angular.json
+Purpose: Angular's project configuration — build settings, dev server options, paths, assets.
+Why it's needed:
+Tells ng serve where the source code is
+Configures the build output directory
+Defines assets (images, styles) to copy
+Sets up different configurations for dev vs. production
+3. tsconfig.json
+Purpose: TypeScript compiler settings — tells TypeScript how strict to be and where files are.
+Why it's needed:
+Enforces type safety across the entire frontend
+Defines strict mode (catch bugs at compile-time)
+Maps module paths for cleaner imports
+File
+	
+Purpose
+
+
+package.json
+	
+Dependencies & npm scripts
+
+
+angular.json
+	
+Angular build & dev config
+
+
+tsconfig.json
+	
+TypeScript compiler settings
+4. main.ts
+Purpose: The very first JavaScript that runs when the browser loads your Angular app.
+Why it's needed:
+Bootstraps the Angular framework
+Loads the root component (AppComponent)
+Injects global providers (HTTP, routing, auth)
+Typical structure:
+ 
+ 
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
+ 
+bootstrapApplication(AppComponent, appConfig)
+ .catch((err) => console.error(err));
+ 
+ 
+ 
+ 
+Angular loads AppComponent (the root component)
+It applies appConfig (providers, HTTP interceptors, routing)
+Renders <app-root></app-root> in index.html
+The app is now running
+ 
+5. app.config.ts
+Purpose: Global configuration — providers that every service and component can use (HTTP client, router, auth interceptor, etc.).
+Why it's needed:
+Centralized setup for dependencies
+Defines HTTP interceptors (to add auth tokens to every request)
+Configures the router
+Sets up custom services
+Why each piece matters:
+provideRouter(routes) — Enables navigation between pages
+withInterceptors([authInterceptor]) — Automatically adds Authorization: Bearer <token> to API requests
+environment — Lets all components know if they're in dev (proxy to localhost) or prod (call real Render backend
+1. What is a Bearer Token?
+A Bearer Token is a type of security token that gives access to the "bearer" (the person or application holding it).
+Imagine a "Bearer Bond" or a movie ticket: the theater doesn't care who bought the ticket; they only care that you are currently holding (bearing) a valid ticket. If you have it, you get in.
+How it works in Web Apps:
+The Format: It is usually a JWT (JSON Web Token)—a long string of encrypted characters.
+The Header: When your Angular app talks to your backend, it sends this token in the HTTP Header like this: Authorization: Bearer <your_very_long_token_string>
+The Risk: Because anyone who holds the token can access the data, it must be sent over HTTPS to prevent "man-in-the-middle" attacks.
+2. What is an Interceptor?
+In Angular, an Interceptor is a piece of code that sits between your application and the internet. It "intercepts" outgoing requests or incoming responses before they reach their final destination.
+Why do we use it here?
+Without an interceptor, if you had 50 different API calls (getting user profile, fetching posts, updating settings), you would have to manually add the Authorization header to every single one. That is repetitive and prone to bugs.
+The Interceptor acts like a "Standardized Shipping Label" machine:
+Intercept: You click "Save Profile."
+Process: The Interceptor pauses the request for a split second.
+Modify: It looks in your local storage, finds your Bearer Token, and "clones" the request with the Authorization header attached.
+Send: It releases the request to the server.
+The Code Logic You Shared:
+TypeScript
+const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+ const token = authService.getToken();
+ if (token) {
+   // We CLONE because the original request is "Read-Only"
+   req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+ }
+ return next(req); // Send the modified request on its way
+};
+Summary Comparison
+Concept
+	
+Simple Analogy
+	
+Role in your App
+
+
+Bearer Token
+	
+A "Keycard" for a hotel.
+	
+Your proof of identity (usually a JWT).
+
+
+Interceptor
+	
+A "Security Guard" checking every person leaving the building.
+	
+Automatically attaches your "Keycard" to every outgoing request.
+ 
+ 
+App component
+ 
+Now that you've looked at the main.ts (the ignition) and app.config.ts (the settings), the AppComponent is the Main Stage.
+Anatomy of the Root Component
+1. The Selectors and Metadata
+selector: 'app-root': This matches the <app-root></app-root> tag in your index.html. Angular looks for that tag and injects this component’s template right there.
+standalone: true: This confirms the component doesn't need a middleman (NgModule). It manages its own dependencies.
+imports: [...]: Since this is a standalone component, you must explicitly list the tools it uses. You’ve imported RouterOutlet (for navigation) and ToastComponent (for notifications).
+2. The Template: Two Key Elements
+Your template is short but incredibly powerful because of what these two tags represent:
+<app-toast></app-toast>: By placing this here, your toast/notification system is global. It sits at the root level, meaning it can stay visible even when you navigate between different pages. It’s "above" the rest of the app.
+<router-outlet></router-outlet>: Think of this as a dynamic placeholder. When the user goes to /login, the Login component appears here. When they go to /dashboard, the Dashboard component replaces it. The AppComponent itself usually stays static (headers, footers, toasts), while the router-outlet swaps the content.
+7. app.routes.ts
+Purpose: Defines all the routes (pages) in the app — what component loads when you visit each URL.
+Why it's needed:
+Maps URLs like /students, /events, /dashboard to their components
+Enables lazy loading (load only the code needed for that page)
+Protects routes with guards (e.g., redirect to login if not authenticated)
+Router checks authGuard — is the user logged in?
+If yes → loads StudentsComponent
+If no → redirects to /login
+Component renders inside <router-outlet> in AppComponent
+Summary-ah sollanum na: AppComponent eppovum fix-ah irukum (Header, Toast mathiri). Aana, antha <router-outlet> irukura idathula mattum, nee kekura page (Students or Login) maari maari vandhu render (display) aagum.
+Summary — Frontend Foundation Stack
+File
+	
+Purpose
+	
+Loads...
+
+
+main.ts
+	
+App entry point
+	
+→ Bootstraps Angular & AppComponent
+
+
+app.config.ts
+	
+Global providers
+	
+→ HTTP, routing, auth interceptor, services
+
+
+app.component.ts
+	
+Root container
+	
+→ Navbar, sidebar, <router-outlet>
+
+
+app.routes.ts
+	
+Route definitions
+	
+→ Maps URLs to components & guards
+ 

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none">
+  <defs>
+    <linearGradient id="aGrad" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" stop-color="#26d0ce"/>
+      <stop offset="50%" stop-color="#20b8a8"/>
+      <stop offset="100%" stop-color="#1a7a6d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Stylised "A" — two arcs crossing like the real knotwork logo -->
+  <!-- Left stroke of A -->
+  <path d="M10 74 L36 8 L46 8 L68 74 H56 L50 56 H22 L16 74 Z"
+        fill="url(#aGrad)" opacity="0.15"/>
+  <!-- Outer left leg -->
+  <path d="M12 72 L37 10" stroke="url(#aGrad)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Outer right leg -->
+  <path d="M66 72 L41 10" stroke="url(#aGrad)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Crossbar -->
+  <path d="M24 48 L54 48" stroke="url(#aGrad)" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Inner left loop arc -->
+  <path d="M37 10 Q52 34 44 48" stroke="url(#aGrad)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <!-- Inner right loop arc -->
+  <path d="M41 10 Q26 34 34 48" stroke="url(#aGrad)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <!-- Bottom left foot -->
+  <path d="M12 72 Q8 76 16 76 Q20 76 22 72" stroke="url(#aGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Bottom right foot -->
+  <path d="M66 72 Q70 76 62 76 Q58 76 56 72" stroke="url(#aGrad)" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- ANVAY wordmark -->
+  <text x="86" y="48" font-family="'Inter','Segoe UI',Arial,sans-serif"
+        font-size="36" font-weight="800" fill="#0d1b4b" letter-spacing="4">ANVAY</text>
+
+  <!-- Tagline -->
+  <text x="87" y="66" font-family="'Inter','Segoe UI',Arial,sans-serif"
+        font-size="10" font-weight="700" fill="#0d1b4b" letter-spacing="2" opacity="0.75">DISCOVER. JOIN. HOST.</text>
+</svg>

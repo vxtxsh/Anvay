@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+.pending-shell { display: flex; min-height: 100vh; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+.pending-left {
+  width: 420px; flex-shrink: 0;
+  background: linear-gradient(160deg, #052e16 0%, #14532d 60%, #166534 100%);
+  padding: 48px 40px; display: flex; flex-direction: column; gap: 40px;
+}
+.brand-area { display: flex; flex-direction: column; gap: 4px; }
+.brand-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: 6px; }
+.brand-tagline { font-size: .6rem; color: #6ee7b7; letter-spacing: 3px; font-weight: 600; }
+.left-copy h2 { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1.25; }
+.left-copy p { color: #86efac; font-size: .9rem; margin-top: 12px; line-height: 1.6; }
+
+.steps { display: flex; flex-direction: column; gap: 0; margin-top: auto; }
+.step { display: flex; align-items: center; gap: 12px; }
+.step-dot { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.12); color: #86efac; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 700; flex-shrink: 0; }
+.step.active .step-dot { background: #16a34a; color: #fff; }
+.step.done .step-dot { background: #15803d; color: #fff; }
+.step span { font-size: .825rem; color: #bbf7d0; font-weight: 500; }
+.step.active span, .step.done span { color: #fff; font-weight: 600; }
+.step-line { width: 2px; height: 24px; background: rgba(255,255,255,.1); margin-left: 15px; }
+
+.pending-right { flex: 1; background: #f0fdf4; display: flex; align-items: center; justify-content: center; padding: 48px 40px; }
+
+.pending-card {
+  background: #fff; border-radius: 24px; padding: 48px 44px; max-width: 520px; width: 100%;
+  box-shadow: 0 8px 40px rgba(0,0,0,.08); border: 1px solid #e2e8f0; text-align: center;
+}
+
+.status-icon { width: 96px; height: 96px; border-radius: 50%; background: #fef9c3; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+
+.status-badge { display: inline-flex; align-items: center; gap: 8px; background: #fef9c3; color: #854d0e; padding: 6px 16px; border-radius: 20px; font-size: .78rem; font-weight: 700; margin-bottom: 16px; }
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #d97706; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+h1 { font-size: 1.6rem; font-weight: 800; color: #0f172a; letter-spacing: -.3px; margin-bottom: 10px; }
+.pending-msg { color: #64748b; font-size: .875rem; line-height: 1.6; margin-bottom: 28px; }
+
+/* Timeline */
+.timeline { text-align: left; margin-bottom: 24px; }
+.tl-item { display: flex; align-items: flex-start; gap: 14px; }
+.tl-line { width: 2px; height: 24px; background: #16a34a; margin-left: 10px; }
+.tl-line-grey { background: #e2e8f0; }
+
+.tl-dot { width: 22px; height: 22px; border-radius: 50%; background: #16a34a; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.tl-grey { background: #e2e8f0; }
+.tl-pulse { background: #fbbf24; position: relative; }
+.tl-pulse::after { content:''; position:absolute; inset:-4px; border-radius:50%; border:2px solid #fbbf24; animation: ring 1.5s infinite; }
+@keyframes ring { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1.6)} }
+
+.tl-title { font-size: .825rem; font-weight: 700; color: #0f172a; }
+.tl-sub { font-size: .75rem; color: #94a3b8; margin-top: 2px; }
+.tl-pending .tl-title { color: #94a3b8; }
+
+.info-note { display: flex; align-items: center; gap: 8px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 14px; color: #15803d; font-size: .8rem; font-weight: 600; margin-bottom: 24px; text-align: left; }
+
+.btn-login { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; background: linear-gradient(135deg, #052e16, #16a34a); color: #fff; border: none; border-radius: 12px; font-size: .95rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .2s; box-shadow: 0 4px 16px rgba(22,163,74,.3); }
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(22,163,74,.4); }
+
+@media (max-width: 900px) {
+  .pending-left { display: none; }
+  .pending-right { padding: 24px; }
+  .pending-card { padding: 32px 24px; }
+}

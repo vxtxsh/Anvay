@@ -1,0 +1,36 @@
+# --- Java / Spring Boot (Maven/Gradle) ---
+target/
+build/
+*.class
+*.jar
+*.war
+*.factorypath
+.mtj.tmp/
+
+# --- Angular / Frontend ---
+**/node_modules/
+**/dist/
+**/tmp/
+**/out-tsc/
+.angular/
+# Ignore Angular CLI cache
+.cache/
+# Ignore environment sensitive files
+src/environments/environment.prod.ts
+
+# --- SQL / Database ---
+# Ignore local database dumps or logs
+*.sql
+*.log
+# If using H2 for local testing
+*.mv.db
+*.trace.db
+
+# --- IDEs / Editors ---
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store

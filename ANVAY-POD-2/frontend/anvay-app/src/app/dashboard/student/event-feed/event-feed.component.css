@@ -1,0 +1,171 @@
+.feed-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.feed-header h2 { font-size: 24px; font-weight: 800; margin: 0; }
+
+.count-badge {
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.event-card {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.event-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+.event-banner {
+  height: 140px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.banner-icon { font-size: 48px; opacity: 0.8; }
+
+.event-body { padding: 24px; }
+
+.type-tag {
+  font-size: 10px;
+  font-weight: 800;
+  color: #9ca3af;
+  text-transform: uppercase;
+  border: 1px solid #e5e7eb;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.event-body h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; color: #111; }
+.inst { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
+
+/* Progress Bar */
+.progress-section { margin-bottom: 24px; }
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #111;
+  border-radius: 10px;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-register { background: #000; color: white; }
+.btn-register:hover { background: #333; }
+
+.btn-done { background: #ecfdf5; color: #059669; cursor: default; }
+
+/* Modal Positioning */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: 90%;
+  max-width: 440px;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Header */
+.modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.header-text h3 { font-size: 1.5rem; font-weight: 700; color: #1a1a1a; margin: 0; }
+.header-text p { color: #666; font-size: 0.9rem; margin: 4px 0 0; }
+.close-btn { background: none; border: none; font-size: 28px; color: #999; cursor: pointer; }
+
+/* Event Preview Card */
+.event-preview-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.type-pill { background: #000; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; }
+.event-preview-card h4 { margin: 12px 0 4px; font-size: 1.1rem; }
+.location-text { font-size: 0.85rem; color: #64748b; display: flex; align-items: center; gap: 4px; }
+
+/* Detail Rows */
+.detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #e2e8f0; }
+.detail-value { font-weight: 600; color: #1a1a1a; }
+.status-tag { color: #10b981; }
+
+.disclaimer { font-size: 0.75rem; color: #94a3b8; line-height: 1.4; margin-top: 20px; }
+
+/* Buttons */
+.modal-footer { display: flex; gap: 12px; margin-top: 32px; }
+.btn-primary { background: #000; color: #fff; border: none; padding: 14px; border-radius: 12px; flex: 2; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-primary:hover { background: #333; }
+.btn-secondary { background: #f1f5f9; color: #475569; border: none; padding: 14px; border-radius: 12px; flex: 1; font-weight: 600; cursor: pointer; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Styling for the non-clickable 'Registered' state */
+/* This is the class applied when event.isRegistered is true */
+.btn-done {
+  background-color: #10b981 !important; /* Emerald Green */
+  color: white !important;
+  cursor: not-allowed;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.btn-register:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}

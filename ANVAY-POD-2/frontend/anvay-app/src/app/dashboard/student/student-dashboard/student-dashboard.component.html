@@ -1,0 +1,91 @@
+
+<div class="dashboard-container" *ngIf="dashboardData">
+  <div class="header-card">
+  <div class="avatar-container">
+    <img src="assets/avatar.png" class="avatar" onerror="this.style.display='none'">
+    <span class="material-icons fallback-icon">account_circle</span>
+  </div>
+  <div class="info">
+    <h2>Welcome back, {{ dashboardData.firstName }}!</h2>
+    <p>{{ dashboardData.institutionName }}</p>
+  </div>
+</div>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <label>Total Points</label>
+      <h3>{{ dashboardData.totalPoints }}</h3>
+      <small>Rank #{{ dashboardData.rank }} in leaderboard</small>
+    </div>
+    <div class="stat-box">
+      <label>Registered Events</label>
+      <h3>{{ dashboardData.registeredEventsCount }}</h3>
+      <small>{{ dashboardData.registeredEventsCount }} upcoming</small>
+    </div>
+    <div class="stat-box">
+      <label>Joined Clubs</label>
+      <h3>{{ dashboardData.joinedClubsCount }}</h3>
+      <small>Active memberships</small>
+    </div>
+    <div class="stat-box">
+      <label>Achievements</label>
+      <h3>{{ dashboardData.achievementCount }}</h3>
+      <small>Awards & recognition</small>
+    </div>
+  </div>
+
+  <div class="dashboard-content-row">
+  <div class="content-card events-section">
+    <div class="card-header">
+      <h3>Upcoming Events</h3>
+    </div>
+    <div class="list-container">
+  <ng-container *ngIf="dashboardData.upcomingEvents && dashboardData.upcomingEvents.length > 0; else noEvents">
+    
+    <div *ngFor="let event of dashboardData.upcomingEvents" class="list-item">
+      <div class="item-info">
+        <strong>{{ event.title }}</strong> 
+        <p>{{ event.institution }}</p>
+        <span class="timestamp">{{ event.dateTime | date:'short' }}</span> 
+      </div>
+      <span class="item-badge">{{ event.type }}</span>
+    </div>
+
+  </ng-container>
+
+  <ng-template #noEvents>
+    <div class="empty-state-container">
+      <span class="material-icons">event_available</span>
+      <p>No upcoming events registered.</p>
+      <button class="explore-btn" routerLink="/dashboard/student/event-feed">Explore Events</button>
+    </div>
+  </ng-template>
+</div>
+  </div>
+
+  <div class="content-card clubs-section">
+  <div class="card-header">
+    <h3>Your Clubs</h3>
+  </div>
+
+  <div class="list-container">
+    <ng-container *ngIf="dashboardData.joinedClubs && dashboardData.joinedClubs.length > 0; else noClubs">
+      <div *ngFor="let club of dashboardData.joinedClubs" class="list-item">
+        <div class="item-info">
+          <strong>{{ club.name }}</strong>
+          <p>{{ club.memberCount }} members</p>
+        </div>
+        <span class="category-badge">{{ club.category }}</span>
+      </div>
+    </ng-container>
+
+    <ng-template #noClubs>
+      <div class="empty-state">
+        <span class="material-icons">groups_3</span>
+        <p>You haven't joined any clubs yet.</p>
+        <button class="explore-btn" routerLink="/dashboard/student/clubs">Explore Clubs</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+</div>

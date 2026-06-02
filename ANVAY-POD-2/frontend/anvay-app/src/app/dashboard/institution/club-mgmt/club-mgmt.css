@@ -1,0 +1,116 @@
+.mgmt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.brand-subtitle {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.btn-create {
+  background-color: #000000; /* Dark button as seen in image */
+  color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  border: none;
+}
+
+/* Table Design */
+.anvay-table th {
+  color: #1e293b;
+  font-size: 0.85rem;
+  padding-bottom: 1.5rem;
+}
+
+.badge-outline {
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+}
+
+.badge-purple {
+  background-color: #a855f7; /* Matches purple 'pending' badge */
+  color: white;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+}
+
+/* Application Card Design */
+.app-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 15px;
+}
+
+.btn-approve {
+  background-color: #10b981; /* Green from 'Approve' button */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.btn-reject {
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.mt-4 {
+  margin-top: 3rem !important; /* Forces the section to appear below the table */
+}
+
+.app-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.user-avatar-placeholder {
+  width: 45px;
+  height: 45px;
+  background-color: #e2e8f0;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.user-club-sub {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.empty-state-info {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+  font-style: italic;
+}
