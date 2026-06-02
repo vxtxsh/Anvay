@@ -269,6 +269,10 @@ docker-compose up --build
 
 ---
 
+### Deployment - Render
+
+Url - https://anvay-pod-2-1.onrender.com/
+
 ## Agile Development Process
 
 Anvay was built across **3 Sprints** following Scrum methodology:
